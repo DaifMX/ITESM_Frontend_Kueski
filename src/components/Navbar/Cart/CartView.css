@@ -1,0 +1,11 @@
+.item-list-container{
+  display: flex;
+  width: 100%;
+  background-color: black;
+  flex-direction: column;
+  font-weight: Bold;
+  color: white;
+  justify-content: center;
+  margin: 0 auto;
+  text-align: center;
+}
