@@ -4,6 +4,8 @@ import productRoutes from "../routes/product-routes";
 
 export default function useProduct() {
     const [products, setProducts] = useState([]);
+    const [response, setResponse] = useState(null);
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -23,5 +25,21 @@ export default function useProduct() {
         }
     };
 
-    return { products, loading, error, getAll };
+    const getById = async (id) => {
+        setLoading(true);
+        try {
+            const res = await productRoutes.getById(id);
+            setResponse(res.data.payload);
+            return res;
+
+        } catch (error) {
+            setError(error);
+            return error;
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return { products, loading, error, response, getAll, getById };
 };

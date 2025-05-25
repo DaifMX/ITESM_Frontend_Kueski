@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import ProductCard from './ProductCard';
 
+import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
 import useProduct from '../../api/hooks/useProduct';
@@ -10,7 +11,7 @@ import useProduct from '../../api/hooks/useProduct';
 export default function ProductListView() {
   const params = useParams();
 
-  const { getAll } = useProduct();
+  const { getAll, loading } = useProduct();
   const [prodcuts, setProducts] = useState([]);
 
   useEffect(() => {
@@ -35,14 +36,15 @@ export default function ProductListView() {
     <>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ display: "flex", flexWrap: "wrap", width: "1460px", margin: "0 auto" }}>
-          {prodcuts ? (
-            prodcuts.map((product) => (
-              <ProductCard key={product.id} props={product} />
-            ))
-          ) : (
-            <h1> Lo sentimos, no hay productos disponibles.</h1>
-          )
-          }
+          {loading ? (
+              <CircularProgress />
+            ) : prodcuts && prodcuts.length > 0 ? (
+              prodcuts.map((product) => (
+                <ProductCard key={product.id} props={product} />
+              ))
+            ) : (
+              <h1>Lo sentimos, no hay productos disponibles.</h1>
+            )}
         </Box>
       </Box>
     </>

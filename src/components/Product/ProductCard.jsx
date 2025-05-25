@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 export default function ProductsCard({ props }) {
   const navigate = useNavigate();

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from "react-router"
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router";
 
 import { Typography, Box, Card, CardContent, CardMedia, Button } from '@mui/material';
 
 import { useCartContext } from '../../context/CartContext';
+import useProduct from '../../api/hooks/useProduct';
 
 export default function ProductDetailView({ context }) {
 
@@ -12,32 +13,24 @@ export default function ProductDetailView({ context }) {
   const params = useParams();
   const navigate = useNavigate()
 
-  const [product, setProduct] = useState(null)
+  const { getById } = useProduct();
+  const [product, setProduct] = useState(null);
 
-  const [productQuantity, setProductQuantity] = useState(1)
+  const [productQuantity, setProductQuantity] = useState(1);
 
   useEffect(() => {
-    if (context?.type === 'CART') {
-      setProduct(context.payload)
-    }
+    if (context?.type === 'CART') setProduct(context.payload);
 
     if (!product && context?.type !== 'CART') {
       try {
-        const db = getFirestore();
-        let snapshot;
-
         (async () => {
-          console.log(params.productId);
-          const prodRef = doc(db, 'products', params.productId);
-          snapshot = await getDoc(prodRef);
-
-          if (snapshot.exists()) setProduct({ id: snapshot.id, ...snapshot.data() });
+          const res = await getById(params.productId);
+          setProduct(res.data.payload);
         })();
       } catch (error) {
         console.error(error);
       }
     }
-    console.log('product', product)
   }, [product, items]);
 
 
@@ -76,7 +69,7 @@ export default function ProductDetailView({ context }) {
               <Card sx={{ width: "100%", mb: 4 }}>
                 <CardMedia
                   sx={{ height: 300, width: 500 }}
-                  image={product.image}
+                  image={`${import.meta.env.VITE_BASE_API_URL}`.replace('/api/', `${product.imgPath}`)}
                   title={product.name}
                 />
                 <CardContent sx={{
@@ -117,29 +110,29 @@ export default function ProductDetailView({ context }) {
                   </Button>
 
                   {context?.type === 'CART' ? (
-                      <Button variant="contained"
-                        onClick={() => {
-                          removeFromCart(product?.id)
-                          console.log('PDC', product.id)
-                        }}
-                        sx={{
-                          backgroundColor: '#ab1002',
-                          height: 60,
-                          fontWeight: 700,
-                          '&:hover': { backgroundColor: '#cf1302' }
-                        }}> Borrar </Button>
-                    ) : (
-                      <Button variant="contained"
-                        onClick={() => addToCart({ product: product, count: productQuantity })}
-                        sx={{
-                          backgroundColor: '#cebd22',
-                          height: 60,
-                          fontWeight: 700,
-                          '&:hover': { backgroundColor: '#e6d225' }
-                        }}>
-                        Agregar
-                      </Button>
-                    )
+                    <Button variant="contained"
+                      onClick={() => {
+                        removeFromCart(product?.id)
+                        console.log('PDC', product.id)
+                      }}
+                      sx={{
+                        backgroundColor: '#ab1002',
+                        height: 60,
+                        fontWeight: 700,
+                        '&:hover': { backgroundColor: '#cf1302' }
+                      }}> Borrar </Button>
+                  ) : (
+                    <Button variant="contained"
+                      onClick={() => addToCart({ product: product, count: productQuantity })}
+                      sx={{
+                        backgroundColor: '#cebd22',
+                        height: 60,
+                        fontWeight: 700,
+                        '&:hover': { backgroundColor: '#e6d225' }
+                      }}>
+                      Agregar
+                    </Button>
+                  )
                   }
 
                 </CardContent>
