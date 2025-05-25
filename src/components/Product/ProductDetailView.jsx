@@ -3,8 +3,6 @@ import { useParams, useNavigate } from "react-router"
 
 import { Typography, Box, Card, CardContent, CardMedia, Button } from '@mui/material';
 
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
-
 import { useCartContext } from '../../context/CartContext';
 
 export default function ProductDetailView({ context }) {

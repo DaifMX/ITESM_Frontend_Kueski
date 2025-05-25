@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -24,7 +22,7 @@ export default function ProductsCard({ props }) {
       <CardMedia
         component="img"
         height="280"
-        image={props.image}
+        image={`${import.meta.env.VITE_BASE_API_URL}`.replace('/api/', `${props.imgPath}`)}
         alt={`Imágen de ${props.name}`}
       />
       <CardContent>
