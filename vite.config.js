@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3030,
+    allowedHosts: ['daif-201.ddns.me']
   },
 })
