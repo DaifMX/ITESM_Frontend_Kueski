@@ -8,7 +8,7 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography';
 
-import ProductDetailContainer from '../../Product/ProductDetailView';
+import ProductDetailContainer from '../../../views/Product/ProductDetailView';
 import { useCartContext } from '../../../context/CartContext';
 
 
