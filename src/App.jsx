@@ -4,11 +4,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from './components/Layout/Layout'
 import CartView from './components/Navbar/Cart/CartView'
-import ProductListView from './components/Product/ProductListView';
-import ProductDetailView from './components/Product/ProductDetailView'
+import ProductListView from './views/Product/ProductListView';
+import ProductDetailView from './views/Product/ProductDetailView'
 
-import LoginView from './components/Auth/Login/LoginView'
-import RegisterView from './components/Auth/Register/RegisterView'
+import LoginView from './views/Auth/Login/LoginView'
+import RegisterView from './views/Auth/Register/RegisterView'
 
 import { CssBaseline } from '@mui/material';
 import darkTheme from './themes/darkTheme';
