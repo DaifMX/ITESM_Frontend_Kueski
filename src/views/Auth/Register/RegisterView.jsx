@@ -1,120 +1,107 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import useUser from '../../../api/hooks/useUser';
+import { useRef, useState } from 'react';
 
 import {
+    CircularProgress,
     Box,
     Button,
     Typography,
     Card,
     Stack,
     Divider,
-    TextField,
-    FormControl,
-    InputLabel,
-    OutlinedInput,
-    InputAdornment,
-    IconButton
 } from '@mui/material'
 
 import Swal from 'sweetalert2';
 
-import Iconify from '../../../components/iconify';
+import RegisterForm from './Form/RegisterForm';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
-export default function LoginView() {
+export default function RegisterView() {
+    const formRef = useRef(null);
     const navigate = useNavigate();
-    const { create } = useUser();
 
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [formStatus, setFormStatus] = useState({ isValid: false, dirty: false });
+    const [loading, setLoading] = useState(false);
 
-    const handleLoginButton = async (e) => {
-        e.preventDefault();
+    const handleRegisterBtn = async () => {
+        if (formRef.current) {
+            setLoading(true);
+            const res = await formRef.current.register();
+            setLoading(false);
 
-        try {
-            const res = await create();
-
-            navigate('../');
-
-        } catch (err) {
-            console.error(err);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: err.response.data.reason,
-                heightAuto: false
-            });
-        }
-    };
-
-    const renderForm = (
-        <>
-            <Stack spacing={3}>
-                <TextField
-                    name="phoneNumber"
-                    type='tel'
-                    label="Número telefónico"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-
-                <FormControl variant="outlined" fullWidth>
-                    <InputLabel htmlFor="password">Contraseña</InputLabel>
-                    <OutlinedInput
-                        id="password"
-                        type={showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                        label="Contraseña"
-                    />
-                </FormControl>
-
-            </Stack>
-        </>
-    );
-
+            if (res) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Exito!',
+                    text: res.data.message,
+                    heightAuto: false,
+                    background: '#1e1e1e',
+                    color: '#f1f1f1',
+                    confirmButtonColor: '#CEBD22',
+                    confirmButtonText: 'Comenzar a comprar',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                }).then((result) => {
+                    if (result.isConfirmed || result.isDismissed) navigate('../');
+                });
+            }
+        };
+    }
     return (
-        <Box
-            sx={{
-                marginTop: 20,
-                height: 1,
-            }}
-        >
+        <Box sx={{ marginTop: 8, height: 1 }}>
             <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-                <Card
-                    sx={{
-                        p: 4,
-                        width: 1,
-                        maxWidth: 420,
-                    }}
-                >
-                    <Typography variant="h4">Crear cuenta</Typography>
+                <Box sx={{ position: 'relative', width: 1, maxWidth: 420 }}>
+                    <Card
+                        sx={{
+                            p: 4,
+                            width: 1,
+                            filter: loading ? 'blur(4px)' : 'none',
+                            pointerEvents: loading ? 'none' : 'auto',
+                            transition: 'filter 0.3s ease',
+                        }}
+                    >
+                        <Typography variant="h4">Crear cuenta</Typography>
+                        <Divider sx={{ my: 2 }} />
 
-                    <Divider sx={{ my: 2 }} />
+                        <RegisterForm
+                            ref={formRef}
+                            onStatusChange={setFormStatus}
+                        />
 
-                    {renderForm}
+                        <Divider sx={{ my: 2 }} />
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+                            <Button sx={{ marginTop: 0 }} onClick={handleRegisterBtn} variant='outlined' disabled={!(formStatus.isValid && formStatus.dirty)}>
+                                Registrar
+                            </Button>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            ¿Ya tienes cuenta?
+                            <a style={{ marginLeft: '8px' }} href="/login">Click aquí</a>
+                        </Box>
+                    </Card>
 
-                    <Divider sx={{ my: 2 }} />
-                    <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
-                        <Button sx={{ marginTop: 0 }} onClick={handleLoginButton} variant='outlined' disabled={!phoneNumber || !password}>
-                            Registrar
-                        </Button>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        ¿Ya tienes cuenta?
-                        <a style={{ marginLeft: '8px' }} href="/login">Click aquí</a>
-                    </Box>
-                </Card>
+                    {/* CircularProgress overlay */}
+                    {loading && (
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'rgba(90, 87, 87, 0.4)',
+                                borderRadius: 2,
+                                zIndex: 1,
+                            }}
+                        >
+                            <CircularProgress />
+                        </Box>
+                    )}
+                </Box>
             </Stack>
         </Box>
     );

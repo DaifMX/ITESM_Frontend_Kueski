@@ -7,10 +7,10 @@ export default function useUser() {
     const [error, setError] = useState(null);
     const [response, setResponse] = useState('');
 
-    const login = async (phoneNumber, password, firstName, lastName) => {
+    const create = async (entry) => {
         setLoading(true);
-        try {
-            const res = await userRoutes.create({ phoneNumber, password, firstName, lastName });
+        try { 
+            const res = await userRoutes.create(entry);
             setResponse(res);
 
             return res;
@@ -22,5 +22,5 @@ export default function useUser() {
         }
     };
 
-    return { loading, error, response, login }
+    return { loading, error, response, create }
 };

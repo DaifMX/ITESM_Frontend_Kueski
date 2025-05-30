@@ -48,7 +48,11 @@ export default function LoginView() {
                 icon: 'error',
                 title: 'Oops...',
                 text: err.response.data.reason,
-                heightAuto: false
+                heightAuto: false,
+                background: '#1e1e1e',
+                color: '#f1f1f1',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
             });
         }
     };
@@ -86,7 +90,7 @@ export default function LoginView() {
     );
 
     return (
-        <Box sx={{ marginTop: 20, height: 1, }}>
+        <Box sx={{ marginTop: 8, height: 1, }}>
             <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
                 <Card sx={{ p: 4, width: 1, maxWidth: 420 }}>
                     <Typography variant="h4">Bienvenido</Typography>
