@@ -20,7 +20,7 @@ import {
 
 import Swal from 'sweetalert2';
 
-import Iconify from '../../../components/iconify';
+import Iconify from '../../../utils/Iconify';
 
 // ----------------------------------------------------------------------
 export default function LoginView() {

@@ -7,7 +7,7 @@ import validationSchema from './register-form-schema';
 import useUser from '../../../../api/hooks/useUser';
 
 import { Stack, FormControl, InputLabel, OutlinedInput, TextField, InputAdornment, IconButton, FormHelperText } from '@mui/material';
-import Iconify from '../../../../components/iconify';
+import Iconify from '../../../../utils/Iconify';
 
 const RegisterForm = forwardRef(({ onStatusChange }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
