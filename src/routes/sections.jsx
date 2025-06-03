@@ -30,14 +30,14 @@ export default function AppRoutes() {
                 {
                     path: 'cart',
                     element:
-                        role === 'user' ? <CartView /> : <Navigate to="/login" replace />
+                        role === 'USER' ? <CartView /> : <Navigate to="/login" replace />
                 },
                 { path: '*', element: <h1>Error: 404</h1> },
             ],
         },
         {
             path: '/admin',
-            element: role === 'admin' ? <AdminLayout /> : <Navigate to="/login" replace />,
+            element: role === 'ADMIN' ? <AdminLayout /> : <Navigate to="/login" replace />,
             children: [
                 { index: true, element: <Navigate to="users" replace /> },
                 { path: 'users', element: <UserView /> },
