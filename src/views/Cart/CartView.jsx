@@ -8,16 +8,14 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography';
 
-import ProductDetailContainer from '../../../views/Product/ProductDetailView';
-import { useCartContext } from '../../../context/CartContext';
+import ProductDetailContainer from '../../views/Product/ProductDetailView';
+import { useCartContext } from '../../context/CartContext';
 
-
-export default function CartView({ greeting = "No hay elementos seleccionados." }) {
-
-  const { items, clearCart } = useCartContext()
+export default function CartView() {
+  const { items, clearCart } = useCartContext();
 
   useEffect(() => {
-    console.log('items', items)
+    console.log('items', items);
   }, [items])
 
   return (
@@ -59,5 +57,5 @@ export default function CartView({ greeting = "No hay elementos seleccionados." 
       }
 
     </div>
-  )
-}
+  );
+};

@@ -1,20 +1,14 @@
 import './App.css'
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
-import MainLayout from './components/Layout/Layout'
-import CartView from './components/Navbar/Cart/CartView'
-import ProductListView from './views/Product/ProductListView';
-import ProductDetailView from './views/Product/ProductDetailView'
+import { CartProvider } from './context/CartContext';
 
-import LoginView from './views/Auth/Login/LoginView'
-import RegisterView from './views/Auth/Register/RegisterView'
+import AppRoutes from './routes/sections';
 
 import { CssBaseline } from '@mui/material';
 import darkTheme from './themes/darkTheme';
 import { ThemeProvider } from '@emotion/react';
-import { CartProvider } from './context/CartContext';
-
 
 function App() {
   return (
@@ -22,17 +16,7 @@ function App() {
       <CssBaseline />
       <CartProvider>
         <BrowserRouter>
-          <Routes>
-            <Route path="register" element={<RegisterView />} />
-            <Route path="login" element={<LoginView />} />
-            <Route element={<MainLayout />}>
-              <Route index element={<ProductListView />} />
-              <Route path="product/:productId" element={<ProductDetailView />} />
-              <Route path="category/:categoryId" element={<ProductListView />} />
-              <Route path="cart" element={<CartView />} />
-              <Route path="*" element={<h1>Error: 404</h1>} />
-            </Route>
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </CartProvider>
     </ThemeProvider>

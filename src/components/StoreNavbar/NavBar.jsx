@@ -1,18 +1,21 @@
-import * as React from 'react';
+import { useState } from 'react';
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import CartWidget from './Cart/CartWidget'
+
+import CartWidget from './CartWidget'
 
 import { useNavigate } from 'react-router-dom';
 
@@ -27,11 +30,11 @@ const pages = [
   ['exteriores', 'Exteriores'],
 ];
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const isLogged = false;
+
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const navigate = useNavigate()
 
@@ -54,10 +57,28 @@ function ResponsiveAppBar() {
     navigate("/cart");
   };
 
-  const handleCategory = () => {
-    console.log('This is a test');
-    navigate("/")
-  }
+  // ==== User Account Icon Settings ==== //
+  const userSettings = [
+    {
+      label: 'Cerrar sesión',
+      onClick: () => {
+        handleCloseUserMenu();
+        navigate('/logout');
+      },
+    }
+  ];
+
+  const visitorSettings = [
+    {
+      label: 'Iniciar sesión',
+      onClick: () => {
+        handleCloseUserMenu();
+        navigate('/login')
+      },
+    }
+  ];
+
+  const settings = isLogged ? userSettings : visitorSettings;
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "var(--main-bg-color)" }}>
@@ -153,10 +174,9 @@ function ResponsiveAppBar() {
             <CartWidget handleCart={handleCart} />
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" sx={{ width: 35, height: 35 }} />
+                <Avatar sx={{ width: 35, height: 35, color: isLogged ? 'white' : 'black' }} />
               </IconButton>
             </Tooltip>
-
 
             <Menu
               sx={{ mt: '45px' }}
@@ -175,8 +195,8 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                <MenuItem key={setting.label} onClick={setting.onClick}>
+                  <Typography sx={{ textAlign: 'center' }}>{setting.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -185,5 +205,6 @@ function ResponsiveAppBar() {
       </Container>
     </AppBar>
   );
-}
+};
+
 export default ResponsiveAppBar;
