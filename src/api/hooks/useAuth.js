@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
+import useAuthContext from '../../context/AuthContext';
 import authRoutes from '../routes/auth-routes';
+
+import getToken from '../../utils/getToken';
 
 import { AxiosError } from 'axios';
 
@@ -9,11 +12,16 @@ export default function useAuth() {
     const [error, setError] = useState(null);
     const [response, setResponse] = useState('');
 
+    const { setCtx } = useAuthContext();
+
     const login = async (phoneNumber, password) => {
         setLoading(true);
         try {
             const res = await authRoutes.login({ phoneNumber, password });
             setResponse(res);
+
+            const freshPayload = getToken();
+            if (freshPayload && freshPayload.role) setCtx({ id: freshPayload.id, name: freshPayload.name, role: freshPayload.role });
 
             return res; // SE NECESITA TODA LA RESPUESTA NO CAMBIAR
 

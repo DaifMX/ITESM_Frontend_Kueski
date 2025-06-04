@@ -4,7 +4,6 @@ import { jwtDecode } from 'jwt-decode';
 export default function getToken() {
     const token = Cookies.get('tkn');
     if (!token) return null;
-    console.log(token);
     try {
         const payload = jwtDecode(token);
         return payload;

@@ -1,30 +1,24 @@
-import { createContext, useMemo, useState, useContext, useEffect } from "react";
-import PropTypes from 'prop-types';
-
-import getToken  from "../utils/getToken";
+// src/contexts/AuthContext.jsx
+import React, { createContext, useMemo, useState, useContext, useEffect } from "react";
+import PropTypes from "prop-types";
+import getToken from "../utils/getToken";
 
 export const AuthContext = createContext({
-    name: null,
-    role: null,
-    isAuthenticated: false,
+    ctx: { id: undefined, name: undefined, role: undefined },
+    setCtx: () => { }
 });
 
-export const AuthContextProvider = ({ children }) => {
-    const [name, setName] = useState('');
-    const [role, setRole] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+export const AuthContextProvider = ({ children, initial = {} }) => {
+    const [ctx, setCtx] = useState(initial);
+    const authContextValue = useMemo(
+        () => ({ ctx, setCtx }), [ctx, setCtx]
+    );
 
     useEffect(() => {
-        const payload = getToken();
-        if(payload && payload.role) {
-            console.log(payload);
-            setName(payload.name);
-            setRole(payload.role);
-        }
+        const freshPayload = getToken();
+        if (freshPayload && freshPayload.role) setCtx({ id: freshPayload.id, name: freshPayload.name, role: freshPayload.role });
     }, []);
-    
-    const authContextValue = useMemo(() => ({ name, setName, role, setRole, isAuthenticated, setIsAuthenticated }), [name, setName, role, setRole, isAuthenticated, setIsAuthenticated]);
-    
+
     return (
         <AuthContext.Provider value={authContextValue}>
             {children}
@@ -33,9 +27,9 @@ export const AuthContextProvider = ({ children }) => {
 };
 
 AuthContextProvider.propTypes = {
-    children: PropTypes.object,
+    children: PropTypes.node.isRequired,
 };
 
-const useAuthContext = () => useContext(AuthContext);
-
+// A convenience hook for consumers
+export const useAuthContext = () => useContext(AuthContext);
 export default useAuthContext;
