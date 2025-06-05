@@ -9,6 +9,21 @@ export default function useProduct() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const create = async (entry) => {
+        setLoading(true);
+        try {
+            const res = await productRoutes.create(entry);
+            setResponse(res);
+
+            return res;
+        } catch (error) {
+            setError(error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const getAll = async (category) => {
         setLoading(true);
         try {
@@ -39,7 +54,37 @@ export default function useProduct() {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
-    return { products, loading, error, response, getAll, getById };
+    const update = async (id, entry) => {
+        setLoading(true);
+        try {
+            const res = await productRoutes.update(id, entry);
+            setResponse(res.data.payload);
+
+            return res;
+        } catch (error) {
+            setError(error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const remove = async (id) => {
+        setLoading(true);
+        try {
+            const res = await productRoutes.remove(id);
+            setResponse(res.data.payload);
+
+            return res;
+        } catch (error) {
+            setError(error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { products, loading, error, response, create, getAll, getById, update, remove };
 };

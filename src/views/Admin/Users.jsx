@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     Table, TableBody, TableCell, TableContainer, TableHead,
@@ -12,6 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import Iconify from '../../utils/Iconify';
+import useUser from '../../api/hooks/useUser';
 
 const HeaderCell = styled(TableCell)(() => ({
     color: '#fff',
@@ -21,13 +22,14 @@ const HeaderCell = styled(TableCell)(() => ({
 }));
 
 export default function UsersView() {
+    const { users, getAll, response } = useUser();
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [selected, setSelected] = useState(null);
 
-    const data = [
-        { firstName: 'Diego', lastName: 'Ibarra', role: 'Admin' },
-        { firstName: 'Luis', lastName: 'Pérez', role: 'Usuario' },
-    ];
+    useEffect(() => {
+        getAll();
+    }, [response]);
 
     const handleOpenMenu = (event, row) => {
         setAnchorEl(event.currentTarget);
@@ -50,13 +52,13 @@ export default function UsersView() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', bgcolor: '#121212', color: '#fff', p: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', bgcolor: '#121212', color: '#fff', px: 8 }}>
             <Typography variant="h6" gutterBottom>
-                Administración del Sistema &gt; Usuarios
+                Lista de Usuarios
             </Typography>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                <Button startIcon={<ArrowBackIcon />} variant="contained" sx={{ bgcolor: '#1e1e1e' }}>
+                <Button startIcon={<ArrowBackIcon />} variant="contained" sx={{ bgcolor: '#fff' }}>
                     Volver
                 </Button>
                 <Button startIcon={<AddIcon />} variant="contained" sx={{ bgcolor: '#1976d2' }}>
@@ -75,7 +77,7 @@ export default function UsersView() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((row, i) => (
+                        {users?.map((row, i) => (
                             <TableRow key={i}>
                                 <TableCell sx={{ color: '#fff' }}>{row.firstName}</TableCell>
                                 <TableCell sx={{ color: '#fff' }}>{row.lastName}</TableCell>
