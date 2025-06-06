@@ -1,7 +1,9 @@
 import axiosInstance from "../axios";
 
 const authRoutes = {
-    login: (entry) => axiosInstance.post(`auth/login`, entry),
+    login: (credentials = {}) => axiosInstance.post(`auth/login`, credentials),
+    logout: () => axiosInstance.get(`auth/logout`),
+    refresh: () => axiosInstance.get('auth/isLoggedIn'),
 };
 
 export default authRoutes;

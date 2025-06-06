@@ -1,5 +1,5 @@
 import './App.css'
-
+import { AuthContextProvider } from './context/AuthContext.jsx'
 import { BrowserRouter } from "react-router-dom";
 
 import { CartProvider } from './context/CartContext';
@@ -12,14 +12,17 @@ import { ThemeProvider } from '@emotion/react';
 
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <CartProvider>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </CartProvider>
-    </ThemeProvider>
+    <AuthContextProvider>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <CartProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </CartProvider>
+      </ThemeProvider>
+    </AuthContextProvider >
+
   );
 };
 

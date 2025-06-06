@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 import userRoutes from '../routes/user-routes';
-import { useAuth } from '../../context/AuthContext';
+import useAuth from '../../context/AuthContext';
 
 export default function useUser() {
     const [loading, setLoading] = useState(false);

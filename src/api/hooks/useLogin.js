@@ -1,27 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import useAuthContext from '../../context/AuthContext';
+import useAuth from '../../context/AuthContext';
 import authRoutes from '../routes/auth-routes';
 
 import getToken from '../../utils/getToken';
 
 import { AxiosError } from 'axios';
 
-export default function useAuth() {
+export default function useLogin() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [response, setResponse] = useState('');
 
-    const { setCtx } = useAuthContext();
+    const { setUser, user } = useAuth();
+
+    useEffect(()=>{
+        console.log('use login,', user)
+    }, [user])
 
     const login = async (phoneNumber, password) => {
         setLoading(true);
         try {
             const res = await authRoutes.login({ phoneNumber, password });
-            setResponse(res);
+            setResponse(res.data.payload); 
 
-            const freshPayload = getToken();
-            if (freshPayload && freshPayload.role) setCtx({ id: freshPayload.id, name: freshPayload.name, role: freshPayload.role });
+            const refTkn = getToken('refreshToken');
+            const propsTkn = getToken('propsToken')
+            
+            if (refTkn && refTkn.role) setUser({ id: refTkn.id, name: propsTkn.fullName, role: refTkn.role, status: res.status});
 
             return res; // SE NECESITA TODA LA RESPUESTA NO CAMBIAR
 

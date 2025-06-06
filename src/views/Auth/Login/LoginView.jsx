@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import useAuth from '../../../api/hooks/useAuth';
-
 import {
     Box,
     Button,
@@ -21,11 +19,12 @@ import {
 import Swal from 'sweetalert2';
 
 import Iconify from '../../../utils/Iconify';
+import useLogin from '../../../api/hooks/useLogin';
 
 // ----------------------------------------------------------------------
 export default function LoginView() {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login } = useLogin();
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
@@ -39,15 +38,14 @@ export default function LoginView() {
 
             setPhoneNumber('');
             setPassword('');
-
-            navigate('../');
+            navigate(location.state?.from || '../', { replace: true });
 
         } catch (err) {
             console.error(err);
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: err.response.data.reason,
+                text: err.response?.data?.reason || err.message,
                 heightAuto: false,
                 background: '#1e1e1e',
                 color: '#f1f1f1',

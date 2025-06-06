@@ -18,20 +18,9 @@ export default function LoadingComponent() {
       }}
     >
       <Typography variant="h1" component="h2">
-        <Box
-          component="img"
-          sx={{
-            height: 152,
-            width: 119,
-            textAlign: "center",
-            margin: "30px"
-          }}
-          alt="Autopartes"
-        //   src="https://globalaceros.mx/wp-content/uploads/2020/02/globalaceros.png"
-        />
-
+        Cargando...
       </Typography>
-      <CircularProgress size="50px" color="inherit" />
+      <CircularProgress size="50px" color="white" />
 
     </Box>
   )

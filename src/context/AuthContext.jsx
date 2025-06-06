@@ -1,24 +1,13 @@
-// src/contexts/AuthContext.jsx
-import React, { createContext, useMemo, useState, useContext, useEffect } from "react";
-import PropTypes from "prop-types";
-import getToken from "../utils/getToken";
+import { createContext, useMemo, useState, useContext } from "react";
 
 export const AuthContext = createContext({
-    ctx: { id: undefined, name: undefined, role: undefined },
-    setCtx: () => { }
+    user: { id: undefined, role: undefined, name: undefined, status: undefined },
+    setUser: () => { }
 });
 
 export const AuthContextProvider = ({ children, initial = {} }) => {
-    const [ctx, setCtx] = useState(initial);
-    const authContextValue = useMemo(
-        () => ({ ctx, setCtx }), [ctx, setCtx]
-    );
-
-    useEffect(() => {
-        const freshPayload = getToken();
-        if (freshPayload && freshPayload.role) setCtx({ id: freshPayload.id, name: freshPayload.name, role: freshPayload.role });
-    }, []);
-
+    const [user, setUser] = useState(initial);
+    const authContextValue = useMemo(() => ({ user, setUser }), [user, setUser]);
     return (
         <AuthContext.Provider value={authContextValue}>
             {children}
@@ -26,10 +15,6 @@ export const AuthContextProvider = ({ children, initial = {} }) => {
     );
 };
 
-AuthContextProvider.propTypes = {
-    children: PropTypes.node.isRequired,
-};
+const useAuth = () => useContext(AuthContext);
 
-// A convenience hook for consumers
-export const useAuthContext = () => useContext(AuthContext);
-export default useAuthContext;
+export default useAuth;

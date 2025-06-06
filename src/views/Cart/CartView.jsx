@@ -16,7 +16,8 @@ export default function CartView() {
 
   useEffect(() => {
     console.log('items', items);
-  }, [items])
+  }, [items]);
+  
 
   return (
     <div className="item-list-container">

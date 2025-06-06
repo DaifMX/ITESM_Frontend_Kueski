@@ -26,6 +26,7 @@ export default function ProductListView() {
     } else {
       (async () => {
         const res = await getAll();
+        console.log(res);
         setProducts(res.data.payload);
       })();
     }
