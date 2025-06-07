@@ -52,7 +52,7 @@ export default function UsersView() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', bgcolor: '#121212', color: '#fff', px: 8 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', bgcolor: '#121212', color: '#fff', px: 12 }}>
             <Typography variant="h6" gutterBottom>
                 Lista de Usuarios
             </Typography>
@@ -72,6 +72,7 @@ export default function UsersView() {
                         <TableRow>
                             <HeaderCell>Nombre</HeaderCell>
                             <HeaderCell>Apellido</HeaderCell>
+                            <HeaderCell>No. Telefono</HeaderCell>
                             <HeaderCell>Rol</HeaderCell>
                             <HeaderCell align="right">Opciones</HeaderCell>
                         </TableRow>
@@ -81,6 +82,7 @@ export default function UsersView() {
                             <TableRow key={i}>
                                 <TableCell sx={{ color: '#fff' }}>{row.firstName}</TableCell>
                                 <TableCell sx={{ color: '#fff' }}>{row.lastName}</TableCell>
+                                <TableCell sx={{ color: '#fff' }}>{row.phoneNumber}</TableCell>
                                 <TableCell sx={{ color: '#fff' }}>{row.role}</TableCell>
                                 <TableCell align="right">
                                     <IconButton onClick={(e) => handleOpenMenu(e, row)}>

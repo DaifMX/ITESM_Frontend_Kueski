@@ -60,7 +60,7 @@ export default function Products() {
     }, [response]);
 
     return (
-        <Box sx={{ bgcolor: '#121212', color: '#fff', minHeight: '100vh', px: 8 }}>
+        <Box sx={{ bgcolor: '#121212', color: '#fff', minHeight: '100vh', px: 12 }}>
             <Typography variant="h6" gutterBottom>
                 Lista de Productos
             </Typography>

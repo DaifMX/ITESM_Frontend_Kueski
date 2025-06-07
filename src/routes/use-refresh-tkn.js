@@ -18,7 +18,6 @@ const useRefreshToken = () => {
 
   const useRefresh = async () => {
     const response = await refresh();
-
     const refTkn = getToken('refreshToken');
     const propsTkn = getToken('propsToken')
 
@@ -26,10 +25,7 @@ const useRefreshToken = () => {
       if (refTkn && refTkn.role) setUser({ id: refTkn.id, name: propsTkn.fullName, role: refTkn.role, status: response.status });
     } else {
       setUser(prev => ({ ...prev, status: response.status, name: getToken('propsToken')?.fullName }));
-
     }
-
-
     return response.status;
   };
 

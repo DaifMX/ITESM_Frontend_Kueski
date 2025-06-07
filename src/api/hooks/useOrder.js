@@ -1,16 +1,16 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import orderRoutes from "../routes/order-routes";
-import { AuthContext } from "../../context/AuthContext";
+import useAuth from "../../context/AuthContext";
 
 export default function useOrder() {
+    const [orders, setOrders] = useState([]);
+    const [response, setResponse] = useState(null);
+    
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const [orders, setOrders] = useState([]);
-    const [response, setResponse] = useState(null);
-
-    const { role } = useContext(AuthContext);
+    const { user } = useAuth();
 
     const create = async (entry) => {
         setLoading(true);
@@ -30,11 +30,10 @@ export default function useOrder() {
     const getAll = async (userId) => {
         setLoading(true);
         try {
-            if (!userId && role !== 'ADMIN') throw new Error('Forbidden');
-            
+            if (!userId && user.role !== 'ADMIN') throw new Error('Forbidden');
+
             const res = await orderRoutes.getAll(userId);
             setOrders(res.data.payload);
-            
             return res;
         } catch (error) {
             setError(error);
@@ -43,6 +42,6 @@ export default function useOrder() {
             setLoading(false);
         }
     };
-
-    return { orders, loading, error, response, create, getAll, getAllByUser };
+    
+    return { orders, loading, error, response, create, getAll };
 };

@@ -13,7 +13,7 @@ export default function useProduct() {
         setLoading(true);
         try {
             const res = await productRoutes.create(entry);
-            setResponse(res);
+            setResponse(res.data.payload);
 
             return res;
         } catch (error) {
