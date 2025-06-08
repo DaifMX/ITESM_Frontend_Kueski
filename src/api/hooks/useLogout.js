@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-import AuthService from 'src/api/auth/auth-service';
-import useAuthContext from 'src/context/AuthContext';
+import AuthService from '../routes/auth-routes';
+import useAuth from '../../context/AuthContext';
 
 export default function useLogout() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('');
     const [response, setResponse] = useState('')
 
-    const { setAuthStatus } = useAuthContext();
+    const { setUser } = useAuth();
 
     const logout = async () => {
         setLoading(true);
@@ -18,9 +18,9 @@ export default function useLogout() {
             const { status, data } = res;
 
             setResponse(data.payload);
-            if (status === 200) setAuthStatus({});
+            if (status === 200) setUser({});
 
-            return data.payload;
+            return res;
 
         } catch (err) {
             setError(err);

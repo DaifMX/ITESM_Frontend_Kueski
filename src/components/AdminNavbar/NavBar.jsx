@@ -1,4 +1,7 @@
-import { Outlet, NavLink } from "react-router-dom";
+
+import { useState } from "react";
+import { NavLink } from "react-router";
+
 import {
     Box,
     Drawer,
@@ -8,18 +11,180 @@ import {
     ListItemText,
     Typography,
 } from "@mui/material";
-import PeopleIcon from "@mui/icons-material/People";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import InventoryIcon from "@mui/icons-material/Inventory";
+import { People, Receipt, Menu, Inventory, ShoppingCart, Home } from '@mui/icons-material';
+import { Divider, CssBaseline, AppBar, Toolbar, IconButton } from "@mui/material";
 
 const drawerWidth = '240px';
-const ACCENT = "#1de9b6";
+const ACCENT = "#cebd22";
 
 export default function NavBar() {
+
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+
+    const handleDrawerClose = () => {
+        setIsClosing(true);
+        setMobileOpen(false);
+    };
+
+    const handleDrawerTransitionEnd = () => {
+        setIsClosing(false);
+    };
+
+    const handleDrawerToggle = () => {
+        if (!isClosing) setMobileOpen(!mobileOpen);
+    };
+
+
+    const drawerContent = (
+        <Drawer variant="permanent">
+            <Divider />
+            <Box sx={{ p: 2, borderBottom: "1px solid #333", display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Dashboard
+                </Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column', height: '100%' }}>
+                <Box>
+                    <List>
+                        {[
+                            { to: "/admin/home", label: 'Inicio', icon: <Home /> },
+                            { to: "/admin/users", label: "Usuarios", icon: <People /> },
+                            { to: "/admin/products", label: "Productos", icon: <Inventory /> },
+                            { to: "/admin/orders", label: "Órdenes", icon: <Receipt /> },
+                        ].map(({ to, label, icon }) => (
+                            <ListItemButton
+                                key={to}
+                                draggable={false}
+                                component={NavLink}
+                                to={to}
+                                end={to === '/admin/'}
+                                sx={{
+                                    color: "#EEE",
+                                    "&:hover": {
+                                        color: 'white',
+                                    },
+                                    "&.active": {
+                                        bgcolor: ACCENT,
+                                        color: "#0e0e0e",
+                                        "& .MuiListItemIcon-root": {
+                                            color: "#0e0e0e",
+                                        },
+                                    },
+                                }}
+                            >
+                                <ListItemIcon sx={{ color: ACCENT }}>
+                                    {icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={label}
+                                />
+                            </ListItemButton>
+                        ))}
+                    </List>
+                </Box>
+                <Box>
+                    <List>
+                        {[
+                            { to: "/", label: "Volver a tienda", icon: <ShoppingCart /> },
+                        ].map(({ to, label, icon }) => (
+                            <ListItemButton
+                                key={to}
+                                draggable={false}
+                                component={NavLink}
+                                to={to}
+                                sx={{
+                                    color: "#EEE",
+                                    "&:hover": {
+                                        color: 'white',
+                                    },
+                                    "&.active": {
+                                        bgcolor: ACCENT,
+                                        color: "#0e0e0e",
+                                        "& .MuiListItemIcon-root": {
+                                            color: "#0e0e0e",
+                                        },
+                                    },
+                                }}
+                            >
+                                <ListItemIcon sx={{ color: ACCENT }}>
+                                    {icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={label}
+                                />
+                            </ListItemButton>
+                        ))}
+                    </List>
+                </Box>
+            </Box>
+        </Drawer>
+    )
+
     return (
-        <Box sx={{ display: "flex", height: "100vh", bgcolor: "#0e0e0e" }}>
+        <Box sx={{ display: "flex", bgcolor: "#0e0e0e" }}>
             {/* ─────────────── DRAWER ─────────────── */}
-            <Drawer
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                sx={{
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                }}
+            >
+
+                <Toolbar sx={{ display: { lg: 'none' } }}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { sm: 'none' } }}
+                    >
+                        <Menu />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        Panel Administrativo
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Box
+                component="nav"
+                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                aria-label="mailbox folders"
+            >
+                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                <Drawer
+                    variant="temporary"
+                    open={mobileOpen}
+                    onTransitionEnd={handleDrawerTransitionEnd}
+                    onClose={handleDrawerClose}
+                    sx={{
+                        display: { xs: 'block', lg: 'block' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    }}
+                    keepMounted
+                >
+                    {drawerContent}
+                </Drawer>
+
+                <Drawer
+                    variant="permanent"
+                    sx={{
+                        display: { xs: 'none', sm: 'block' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    }}
+                    open
+                >
+                    {drawerContent}
+                </Drawer>
+            </Box>
+        </Box>
+    );
+};
+
+{/* <Drawer
                 variant="permanent"
                 sx={{
                     width: drawerWidth,
@@ -33,48 +198,4 @@ export default function NavBar() {
                         borderRight: "1px solid #333",
                     },
                 }}
-            >
-                <Box sx={{ p: 2, borderBottom: "1px solid #333" }}>
-                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                        Panel Administrativo
-                    </Typography>
-                </Box>
-
-                <List>
-                    {[
-                        { to: "/admin/users", label: "Usuarios", icon: <PeopleIcon /> },
-                        { to: "/admin/products", label: "Productos", icon: <InventoryIcon /> },
-                        { to: "/admin/orders", label: "Órdenes", icon: <ShoppingCartIcon /> },
-                    ].map(({ to, label, icon }) => (
-                        <ListItemButton
-                            key={to}
-                            component={NavLink}
-                            to={to}
-                            sx={{
-                                color: "#EEE",
-                                "&:hover": {
-                                    color: 'white',
-                                    bgcolor: "rgba(30, 233, 182, 0.15)",
-                                },
-                                "&.active": {
-                                    bgcolor: ACCENT,
-                                    color: "#0e0e0e",
-                                    "& .MuiListItemIcon-root": {
-                                        color: "#0e0e0e",
-                                    },
-                                },
-                            }}
-                        >
-                            <ListItemIcon sx={{ color: ACCENT }}>
-                                {icon}
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={label}
-                            />
-                        </ListItemButton>
-                    ))}
-                </List>
-            </Drawer>
-        </Box>
-    );
-};
+                 */}

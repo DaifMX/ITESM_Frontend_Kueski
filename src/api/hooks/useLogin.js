@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import useAuth from '../../context/AuthContext';
 import authRoutes from '../routes/auth-routes';
 
-import getToken from '../../utils/getToken';
+import getToken from '../../utils/get-token';
 
 import { AxiosError } from 'axios';
 

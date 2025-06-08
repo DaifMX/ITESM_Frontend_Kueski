@@ -1,15 +1,31 @@
-import { useEffect } from "react";
-import { useLocation, Navigate, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, Navigate, Outlet } from "react-router";
 import useAuth from "../../context/AuthContext";
+import {useCookies} from 'react-cookie'
+import useLogout from '../../api/hooks/useLogout'
 
 const RequireAuth = ({ allowedRoles }) => {
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const location = useLocation();
+    
+    const [firstRender, setFirstRender] = useState(true)
 
-    console.log('RequiresAuth Called');
-    console.log('RequiresAuth Called, user:', user);
+    const [cookies] = useCookies(['refreshToken'])
 
     useEffect(()=>{
+        console.log(firstRender)
+        if ( user.role && !cookies.refreshToken && !firstRender) {
+            setUser({})
+            
+        }
+        
+
+    }, [cookies.refreshToken])
+
+    useEffect(()=>{
+     if (firstRender) {
+        setFirstRender(false)
+     }   
     })
 
     if (!allowedRoles?.includes(user.role)) return <Navigate to="/unauthorized" state={{ from: location }} replace />

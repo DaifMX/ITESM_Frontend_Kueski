@@ -2,7 +2,7 @@ import axiosInstance from "../api/axios";
 
 import useAuth from "../context/AuthContext";
 
-import getToken from "../utils/getToken";
+import getToken from "../utils/get-token";
 
 const useRefreshToken = () => {
   const { setUser, user } = useAuth();

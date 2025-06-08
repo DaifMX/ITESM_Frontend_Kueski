@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router';
 
-import ProductCard from '../../components/ProductCard';
+import ProductCard from '../../../components/ProductCard';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
-import useProduct from '../../api/hooks/useProduct';
+import useProduct from '../../../api/hooks/useProduct';
 
 export default function ProductListView() {
   const params = useParams();

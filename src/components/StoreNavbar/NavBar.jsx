@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
   AppBar,
@@ -17,7 +17,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import CartWidget from './CartWidget'
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import useAuth from '../../context/AuthContext';
+import useLogout from '../../api/hooks/useLogout';
 
 const pages = [
   ['rines', 'Rines'],
@@ -31,8 +33,10 @@ const pages = [
 ];
 
 function ResponsiveAppBar() {
-  const isLogged = false;
+  const { user } = useAuth();
+  const { logout } = useLogout();
 
+  const [isLogged, setIsLogged] = useState(Boolean(user.role));
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -57,13 +61,34 @@ function ResponsiveAppBar() {
     navigate("/cart");
   };
 
+  useEffect(() => {
+    setIsLogged(Boolean(user.role));
+  }, [user.role]);
+
   // ==== User Account Icon Settings ==== //
   const userSettings = [
     {
       label: 'Cerrar sesión',
+      onClick: async () => {
+        handleCloseUserMenu();
+        await logout();
+      },
+    }
+  ];
+
+  const adminSettings = [
+    {
+      label: 'Dashboard',
       onClick: () => {
         handleCloseUserMenu();
-        navigate('/logout');
+        navigate('/admin/home');
+      },
+    },
+    {
+      label: 'Cerrar sesión',
+      onClick: async () => {
+        handleCloseUserMenu();
+        await logout();
       },
     }
   ];
@@ -78,7 +103,14 @@ function ResponsiveAppBar() {
     }
   ];
 
-  const settings = isLogged ? userSettings : visitorSettings;
+
+  const settings =
+    isLogged ?
+      user.role === 'ADMIN' ?
+        adminSettings :
+        userSettings
+      :
+      visitorSettings;
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "var(--main-bg-color)" }}>

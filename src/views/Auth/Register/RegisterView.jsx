@@ -13,7 +13,7 @@ import {
 import Swal from 'sweetalert2';
 
 import RegisterForm from './Form/RegisterForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 // ----------------------------------------------------------------------
 export default function RegisterView() {

@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { useRoutes, Navigate, Route, Outlet } from "react-router-dom";
+import { useRoutes, Navigate } from "react-router";
 
 import AdminLayout from "../layout/Admin/AdminLayout";
 import StoreLayout from "../layout/StoreLayout";
@@ -7,20 +7,25 @@ import StoreLayout from "../layout/StoreLayout";
 import RequireAuth from "./components/RequieresAuth";
 import PersistLogin from "./components/PersistLogin";
 
-export const ProductView = lazy(() => import('../views/Admin/Products'));
-export const UserView = lazy(() => import('../views/Admin/Users'));
-export const OrderView = lazy(() => import('../views/Admin/Orders'));
+export const HomeView = lazy(() => import('../views/Admin/Home/Home'));
+export const ProductView = lazy(() => import('../views/Admin/Products/Products'));
+export const UserView = lazy(() => import('../views/Admin/Users/Users'));
+export const OrderView = lazy(() => import('../views/Admin/Orders/Orders'));
 
-export const CartView = lazy(() => import('../views/Cart/CartView'));
+export const CartView = lazy(() => import('../views/Shop/Cart/CartView'));
 export const LoginView = lazy(() => import('../views/Auth/Login/LoginView'));
 export const RegisterView = lazy(() => import('../views/Auth/Register/RegisterView'));
-export const ProductDetailView = lazy(() => import('../views/Product/ProductDetailView'));
-export const ProductListView = lazy(() => import('../views/Product/ProductListView'));
+export const ProductDetailView = lazy(() => import('../views/Shop/Product/ProductDetailView'));
+export const ProductListView = lazy(() => import('../views/Shop/Product/ProductListView'));
+export const ProductCartView = lazy(() => import('../views/Shop/Product/ProductCartView'));
+
+
 
 export default function AppRoutes() {
     const routes = useRoutes([
         { path: '/register', element: <RegisterView /> },
         { path: '/login', element: <LoginView /> },
+        { path: '/test', element: <ProductCartView /> },
         {
             element: <StoreLayout />,
             children: [
@@ -54,7 +59,18 @@ export default function AppRoutes() {
                     path: '/admin',
                     element: <AdminLayout />,
                     children: [
-                        // Users route (protected)
+                        
+                        // Home route (protected)
+                        {
+                            element: <RequireAuth allowedRoles={['ADMIN']} />,
+                            children: [
+                                {
+                                    path: 'home',
+                                    element: <HomeView />
+
+                                }
+                            ],
+                        },
                         {
                             element: <RequireAuth allowedRoles={['ADMIN']} />,
                             children: [
@@ -93,7 +109,7 @@ export default function AppRoutes() {
                             children: [
                                 {
                                     path: '*',
-                                    element: <Navigate to="/admin/users" replace />
+                                    element: <Navigate to="/admin/home" replace />
                                 }
                             ],
                         },

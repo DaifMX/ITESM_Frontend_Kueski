@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import authRoutes from '../routes/auth-routes';
 import useAuth from '../../context/AuthContext';
-import getToken from '../../utils/getToken';
+import getToken from '../../utils/get-token';
 
 export default function useRefresh() {
     const [loading, setLoading] = useState(false)

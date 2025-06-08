@@ -3,8 +3,8 @@ import { useParams, useNavigate } from "react-router";
 
 import { Typography, Box, Card, CardContent, CardMedia, Button } from '@mui/material';
 
-import { useCartContext } from '../../context/CartContext';
-import useProduct from '../../api/hooks/useProduct';
+import { useCartContext } from '../../../context/CartContext';
+import useProduct from '../../../api/hooks/useProduct';
 
 export default function ProductDetailView({ context }) {
 
@@ -123,7 +123,7 @@ export default function ProductDetailView({ context }) {
                       }}> Borrar </Button>
                   ) : (
                     <Button variant="contained"
-                      onClick={() => addToCart({ product: product, count: productQuantity })}
+                      onClick={() => addToCart({ product: product, amount: productQuantity })}
                       sx={{
                         backgroundColor: '#cebd22',
                         height: 60,

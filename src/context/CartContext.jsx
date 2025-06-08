@@ -17,7 +17,7 @@ const cartReducer = (state, action) => {
         let newState = state.items.filter((e) => e.product.id !== action.payload.product.id)
         console.log('newstate', newState)
         let updateProduct = state.items.find((p) => p.product.id === action.payload.product.id)
-        let acc = updateProduct.count += action.payload.count
+        let acc = updateProduct.amount += action.payload.amount
         
         return { ...state, items: [...newState, updateProduct] }
       }
@@ -53,6 +53,21 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     console.log('state', state.total)
   }, [state])
+
+  useEffect(() => {
+
+    if ( state.items.length === 0 ) {
+      const items = JSON.parse(localStorage.getItem('cart'))
+      items.forEach(item => {
+        addToCart(item)
+      });
+
+    }
+
+    localStorage.setItem('cart', JSON.stringify(state.items))
+
+    console.log(localStorage.getItem('cart'))
+  }, [state.items])
 
 
   const value = useMemo(() => ({

@@ -60,7 +60,7 @@ export default function useUser() {
     };
 
     const remove = async (id) => {
-        if (role !== 'ADMIN') throw new Error('Forbidden');
+        if (user.role !== 'ADMIN') throw new Error('Forbidden');
 
         setLoading(true);
         try {

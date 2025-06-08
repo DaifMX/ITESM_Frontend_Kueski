@@ -8,8 +8,8 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography';
 
-import ProductDetailContainer from '../../views/Product/ProductDetailView';
-import { useCartContext } from '../../context/CartContext';
+import ProductDetailContainer from '../Product/ProductDetailView';
+import { useCartContext } from '../../../context/CartContext';
 
 export default function CartView() {
   const { items, clearCart } = useCartContext();
@@ -45,7 +45,7 @@ export default function CartView() {
             <Box sx={{ display: "flex", flexWrap: "wrap", margin: "0 auto" }}>
               {
                 items.map((item) => {
-                  return <ProductDetailContainer context={{ type: "CART", payload: item.product }} />
+                  return <ProductDetailContainer key={item.product.id} context={{ type: "CART", payload: item.product }} />
                 })
               }
             </Box>

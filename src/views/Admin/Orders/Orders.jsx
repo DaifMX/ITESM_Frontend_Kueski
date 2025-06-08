@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+
 import {
     Table, TableBody, TableCell, TableContainer, TableHead,
     TableRow, Paper, Box, Typography, Button, Collapse, IconButton
@@ -7,9 +9,8 @@ import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
 
-import useOrder from '../../api/hooks/useOrder';
+import useOrder from '../../../api/hooks/useOrder';
 
 const HeaderCell = styled(TableCell)(() => ({
     color: '#fff',
@@ -19,6 +20,7 @@ const HeaderCell = styled(TableCell)(() => ({
 }));
 
 export default function Orders() {
+    const navigate = useNavigate();
     const { orders, getAll, response } = useOrder();
 
     const [openClientRow, setOpenClientRow] = useState(null);
@@ -35,14 +37,18 @@ export default function Orders() {
             await getAll();
             console.log(orders);
         })();
-    }, [response])
+    }, [response]);
 
     return (
-        <Box sx={{ bgcolor: '#121212', color: '#fff', minHeight: '100vh', px: 12 }}>
+        <Box sx={{ bgcolor: '#121212', color: '#fff', minHeight: '100vh', px: { xs: 1, lg: 6 } }}>
             <Typography variant="h6" gutterBottom>
-                Administración del Sistema &gt; Órdenes
+                Lista de órdenes
             </Typography>
-
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                <Button startIcon={<ArrowBackIcon />} variant="contained" sx={{ bgcolor: '#fff' }} onClick={() => navigate('./home')}>
+                    Volver
+                </Button>
+            </Box>
             <TableContainer component={Paper} sx={{ bgcolor: '#1e1e1e' }}>
                 <Table sx={{ minWidth: 700 }}>
                     <TableHead>

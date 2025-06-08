@@ -6,7 +6,7 @@ import useAuth from "../../context/AuthContext";
 export default function useOrder() {
     const [orders, setOrders] = useState([]);
     const [response, setResponse] = useState(null);
-    
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -42,6 +42,22 @@ export default function useOrder() {
             setLoading(false);
         }
     };
-    
-    return { orders, loading, error, response, create, getAll };
+
+    const getAdminDashboardInfo = async () => {
+        setLoading(true);
+        try {
+            if (user.role !== 'ADMIN') throw new Error('Forbidden');
+            const res = await orderRoutes.getAdminDashboardInfo();
+
+            setResponse(res.data.payload);
+            return res;
+        } catch (error) {
+            setError(error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { orders, loading, error, response, create, getAll, getAdminDashboardInfo };
 };
