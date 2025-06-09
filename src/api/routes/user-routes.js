@@ -1,8 +1,8 @@
 import axiosInstance from "../axios";
 
 const userRoutes = {
-    getAll: () => axiosInstance.get('user/getAll'),
     create: (entry = {}) => axiosInstance.post(`user/create`, entry),
+    getAll: () => axiosInstance.get('user/getAll'),
     remove: async (id) => axiosInstance.delete(`user/remove/${id}`)
 };
 
