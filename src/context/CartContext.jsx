@@ -58,7 +58,7 @@ export const CartProvider = ({ children }) => {
 
     if ( state.items.length === 0 ) {
       const items = JSON.parse(localStorage.getItem('cart'))
-      items.forEach(item => {
+      items?.forEach(item => {
         addToCart(item)
       });
 

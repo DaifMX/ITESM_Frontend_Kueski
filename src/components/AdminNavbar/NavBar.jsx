@@ -133,8 +133,7 @@ export default function NavBar() {
                     ml: { sm: `${drawerWidth}px` },
                 }}
             >
-
-                <Toolbar sx={{ display: { lg: 'none' } }}>
+                <Toolbar sx={{ display: { md: 'none', lg: 'none', sm: 'none' } }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -154,7 +153,6 @@ export default function NavBar() {
                 sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
                 aria-label="mailbox folders"
             >
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Drawer
                     variant="temporary"
                     open={mobileOpen}
@@ -183,19 +181,3 @@ export default function NavBar() {
         </Box>
     );
 };
-
-{/* <Drawer
-                variant="permanent"
-                sx={{
-                    width: drawerWidth,
-                    zIndex: 100,
-                    flexShrink: 0,
-                    "& .MuiDrawer-paper": {
-                        width: drawerWidth,
-                        boxSizing: "border-box",
-                        bgcolor: "#121212",
-                        color: "#EEEEEE",
-                        borderRight: "1px solid #333",
-                    },
-                }}
-                 */}

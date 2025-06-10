@@ -26,7 +26,6 @@ export default function ProductListView() {
     } else {
       (async () => {
         const res = await getAll();
-        console.log(res);
         setProducts(res.data.payload);
       })();
     }
@@ -36,16 +35,16 @@ export default function ProductListView() {
   return (
     <>
       <Box sx={{ display: "flex" }}>
-        <Box sx={{ display: "flex", flexWrap: "wrap", width: "1460px", margin: "0 auto" }}>
+        <Box sx={{ display: "flex", flexWrap: { md: "wrap" }, width: "1460px", margin: "0 auto", flexDirection: { xs: 'column', sm: 'row' }, justifyContent: { xs: 'center' }, alignItems: { xs: 'center' } }}>
           {loading ? (
-              <CircularProgress />
-            ) : prodcuts && prodcuts.length > 0 ? (
-              prodcuts.map((product) => (
-                <ProductCard key={product.id} props={product} />
-              ))
-            ) : (
-              <h1>Lo sentimos, no hay productos disponibles.</h1>
-            )}
+            <CircularProgress />
+          ) : prodcuts && prodcuts.length > 0 ? (
+            prodcuts.map((product) => (
+              <ProductCard key={product.id} props={product} />
+            ))
+          ) : (
+            <h1>Lo sentimos, no hay productos disponibles.</h1>
+          )}
         </Box>
       </Box>
     </>

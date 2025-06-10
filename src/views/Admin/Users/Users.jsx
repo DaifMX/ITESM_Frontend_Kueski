@@ -85,7 +85,6 @@ export default function UsersView() {
     };
 
     const handleClose = () => {
-        formik.resetForm();
         setAnchorEl(null);
         setSelected(null);
     };
@@ -108,9 +107,10 @@ export default function UsersView() {
         };
         setData((prev) => [...prev, values]);
     };
-    
+
     const handleDeleteDialogConfirmBtn = async () => {
         try {
+            console.log(selected.id);
             const res = await remove(selected.id);
             if (res || !error) {
                 setSnackbar({ open: true, message: `Usuario ${selected.phoneNumber} removido correctamente`, severity: 'success' });
@@ -166,7 +166,7 @@ export default function UsersView() {
                                 <TableCell sx={{ color: '#fff' }}>{row.lastName}</TableCell>
                                 <TableCell sx={{ color: '#fff' }}>{row.phoneNumber}</TableCell>
                                 <TableCell sx={{ color: '#fff' }}>{row.role}</TableCell>
-                                <TableCell align="right">
+                                <TableCell sx={{ display: 'flex', justifyContent: 'right'}}>
                                     <IconButton onClick={(e) => handleOpenMenu(e, row)}>
                                         <MoreVertIcon sx={{ color: '#fff' }} />
                                     </IconButton>
@@ -187,7 +187,6 @@ export default function UsersView() {
                         Eliminar
                     </MenuItem>
                 </Popover>
-
             </TableContainer>
 
             <Dialog open={openNewUserDialog} onClose={() => setOpenNewUserDialog(false)}>

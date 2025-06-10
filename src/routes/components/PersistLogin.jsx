@@ -1,9 +1,7 @@
-import { useEffect, Suspense, useState } from 'react';
-import { useCookies } from 'react-cookie'
+import { useEffect, useState } from 'react';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 
 import useAuth from '../../context/AuthContext';
-// import useRefresh from '../../api/hooks/useRefresh';
 import useRefreshToken from '../use-refresh-tkn';
 import { Outlet } from 'react-router';
 
@@ -11,8 +9,6 @@ const PersistLogin = () => {
     const { user, setUser } = useAuth();
     const refresh = useRefreshToken();
     const [isLoading, setIsLoading] = useState(true);
-
-    const [cookies] = useCookies(['refreshToken'])
 
     useEffect(() => {
         let isMounted = true;

@@ -19,7 +19,7 @@ export default function ColorBadge({handleCart}) {
   })
 
   return (
-    <IconButton spacing={2} direction="row" sx={{ mr: 5, ml: 5 }} onClick={handleCart}>
+    <IconButton spacing={2} direction="row" sx={{ ml: { xs: '6px', md: 5 }, mr: { xs: '6px', md: 5 } }} onClick={handleCart}>
       <Badge badgeContent={itemsAmount} color="error" >
         <ShoppingCartIcon color="action" sx={{ color: "white", fontSize: 27}} />
       </Badge>

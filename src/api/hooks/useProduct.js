@@ -71,6 +71,20 @@ export default function useProduct() {
         }
     };
 
+    const uploadImg = async (id, img) => {
+        setLoading(true);
+        try {
+            const res = await productRoutes.uploadImg(id, img);
+            setResponse(res.data.payload);
+            return res;
+        } catch (error) {
+            setError(error);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const remove = async (id) => {
         setLoading(true);
         try {
@@ -86,5 +100,5 @@ export default function useProduct() {
         }
     };
 
-    return { products, loading, error, response, create, getAll, getById, update, remove };
+    return { products, loading, error, response, create, getAll, getById, update, uploadImg, remove };
 };

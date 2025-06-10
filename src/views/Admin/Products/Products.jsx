@@ -1,4 +1,4 @@
-import { useEffect, useState, forwardRef } from 'react';
+import { useEffect, useState, forwardRef, useCallback, memo } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router';
 
@@ -49,9 +49,55 @@ const CustomAlert = forwardRef((props, ref) => (
     <Alert elevation={6} ref={ref} variant="filled" {...props} />
 ));
 
+const PopoverModal = memo(({
+    anchorEl,
+    handleClose,
+    handleUploadImage,
+    handleEditButton,
+    setDeleteDialogOpen,
+    setAnchorEl
+
+}) => {
+    return (
+        <Popover
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+            <MenuItem
+                component="label"
+                sx={{ cursor: 'pointer' }}
+            >
+                <Iconify icon="mdi:image-plus" sx={{ mr: 2 }} />
+                Subir Imagen
+                <input
+                    type="file"
+                    accept="image/jpeg,image/webp"
+                    hidden
+                    onChange={handleUploadImage}
+                />
+            </MenuItem>
+            <MenuItem onClick={handleEditButton}>
+                <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+                Editar
+            </MenuItem>
+            <MenuItem onClick={() => {
+                setDeleteDialogOpen(true)
+                setAnchorEl(null)
+            }} sx={{ color: 'error.main' }}>
+                <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+                Eliminar
+            </MenuItem>
+        </Popover>
+    );
+});
+
+
 export default function Products() {
     const navigate = useNavigate();
-    const { products, getAll, response, create } = useProduct();
+    const { products, getAll, response, create, uploadImg, remove } = useProduct();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [selected, setSelected] = useState(null);
@@ -74,13 +120,19 @@ export default function Products() {
         validateOnChange: true,
     });
 
-    const handleOpenMenu = (event, row) => {
+    useEffect(() => {
+
+        console.log('anchor', anchorEl)
+    }, [anchorEl])
+
+    const handleOpenMenu = useCallback((event, row) => {
+        console.log('open')
+
         setAnchorEl(event.currentTarget);
         setSelected(row);
-    };
+    }, []);
 
     const handleClose = () => {
-        formik.resetForm();
         setAnchorEl(null);
         setSelected(null);
     };
@@ -94,6 +146,7 @@ export default function Products() {
             create(formik.values).then((res) => {
                 if (res || !error) setSnackbar({ open: true, message: 'Producto creado correctamente.', severity: 'success' });
                 setOpenNewProductDialog(false);
+                formik.handleReset();
             }).catch((err) => {
                 setSnackbar({ open: true, message: err.response.data.reason, severity: 'error' });
             });
@@ -105,8 +158,23 @@ export default function Products() {
         setData((prev) => [...prev, values]);
     };
 
-    const handleUploadImage = () => {
-        alert(`Subir imagen de: ${selected.name}`);
+    const handleUploadImage = async (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        // regex double-check
+        if (!/\.(?:jpe?g|webp)$/i.test(file.name)) {
+            setSnackbar({ open: true, message: 'Extensión de archivo invalido. Solo se acepta jpeg, jpg ó png', severity: 'error' });
+            event.target.value = '';
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+        const res = await uploadImg(selected.id, formData);
+
+        if (res.status == 200) setSnackbar({ open: true, message: 'Imagen subida correctamente al servidor.', severity: 'success' });
+
         handleClose();
     };
 
@@ -116,10 +184,11 @@ export default function Products() {
     };
 
     const handleDeleteConfirmBtn = async () => {
+        handleClose();
         try {
             const res = await remove(selected.id);
             if (res || !error) {
-                setSnackbar({ open: true, message: `Usuario ${selected.phoneNumber} removido correctamente`, severity: 'success' });
+                setSnackbar({ open: true, message: `Producto ${selected.name} removido correctamente`, severity: 'success' });
                 setDeleteDialogOpen(false);
             }
         } catch (err) {
@@ -127,6 +196,9 @@ export default function Products() {
             setSnackbar({ open: true, message: err.response.data.reason || 'Error desconocido', severity: 'error' });
         }
     };
+
+
+
 
     return (
         <Box sx={{ bgcolor: '#121212', color: '#fff', minHeight: '100vh', px: { xs: 1, lg: 6 } }}>
@@ -162,6 +234,7 @@ export default function Products() {
                             <HeaderCell>Categoria</HeaderCell>
                             <HeaderCell>Descripción</HeaderCell>
                             <HeaderCell>Stock</HeaderCell>
+                            <HeaderCell sx={{ textAlign: 'center' }}>Stock Comprometido</HeaderCell>
                             <HeaderCell align="right">Opciones</HeaderCell>
                         </TableRow>
                     </TableHead>
@@ -169,11 +242,12 @@ export default function Products() {
                         {products?.map((row, i) => (
                             <TableRow key={i}>
                                 <TableCell sx={{ color: '#fff' }}>{row.name}</TableCell>
-                                <TableCell sx={{ color: '#fff' }}>{row.price}</TableCell>
-                                <TableCell sx={{ color: '#fff' }}>{row.category}</TableCell>
+                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.price}</TableCell>
+                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.category}</TableCell>
                                 <TableCell sx={{ color: '#fff' }}>{row.description}</TableCell>
-                                <TableCell sx={{ color: '#fff' }}>{row.stock}</TableCell>
-                                <TableCell align="right">
+                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.stock}</TableCell>
+                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.stockCommitted}</TableCell>
+                                <TableCell align="center">
                                     <IconButton onClick={(e) => handleOpenMenu(e, row)}>
                                         <MoreVertIcon sx={{ color: '#fff' }} />
                                     </IconButton>
@@ -182,27 +256,14 @@ export default function Products() {
                         ))}
                     </TableBody>
                 </Table>
-
-                <Popover
-                    open={Boolean(anchorEl)}
+                <PopoverModal
                     anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                >
-                    <MenuItem onClick={handleUploadImage}>
-                        <Iconify icon="mdi:image-plus" sx={{ mr: 2 }} />
-                        Subir Imagen
-                    </MenuItem>
-                    <MenuItem onClick={handleEditButton}>
-                        <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-                        Editar
-                    </MenuItem>
-                    <MenuItem onClick={() => setDeleteDialogOpen(true)} sx={{ color: 'error.main' }}>
-                        <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-                        Eliminar
-                    </MenuItem>
-                </Popover>
+                    handleClose={handleClose}
+                    handleUploadImage={handleUploadImage}
+                    handleEditButton={handleEditButton}
+                    setDeleteDialogOpen={setDeleteDialogOpen}
+                    setAnchorEl={setAnchorEl}
+                />
             </TableContainer>
 
             <Dialog lg={1200} open={openNewProductDialog} onClose={() => setOpenNewProductDialog(false)}>

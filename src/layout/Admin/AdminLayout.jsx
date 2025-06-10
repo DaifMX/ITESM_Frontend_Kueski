@@ -11,7 +11,7 @@ export default function AdminLayout({ children }) {
                 sx={{
                     minHeight: 1,
                     display: 'flex',
-                    flexDirection: { xs: 'column', lg: 'row' },
+                    flexDirection: { xs: 'column', lg: 'row', md: 'row', sm: 'row' },
                 }}
             >
                 <NavBar />

@@ -68,12 +68,19 @@ function ResponsiveAppBar() {
   // ==== User Account Icon Settings ==== //
   const userSettings = [
     {
+      label: 'Mis ordenes',
+      onClick: () => {
+        handleCloseUserMenu();
+        navigate('/my-orders');
+      },
+    },
+    {
       label: 'Cerrar sesión',
       onClick: async () => {
         handleCloseUserMenu();
         await logout();
       },
-    }
+    },
   ];
 
   const adminSettings = [
@@ -108,9 +115,8 @@ function ResponsiveAppBar() {
     isLogged ?
       user.role === 'ADMIN' ?
         adminSettings :
-        userSettings
-      :
-      visitorSettings;
+        userSettings :
+        visitorSettings;
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "var(--main-bg-color)" }}>

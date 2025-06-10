@@ -14,7 +14,20 @@ export default function ProductsCard({ props }) {
   const handleDetailsBtn = () => navigate((`/product/${props.id}`));
 
   return (
-    <Card sx={{ width: 345, margin: "10px", backgroundColor: "secondary", overflow: "hidden", '&:hover': { transform: "scale(1.03);", transition: "all .2s ease-in-out", cursor: "pointer" } }}>
+    <Card sx={{
+      width: 345,
+      margin: "10px",
+      backgroundColor: "secondary",
+      overflow: "hidden",
+      '&:hover': {
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        '&:hover': {
+          transform: 'scale(1.03)',
+          boxShadow: 6,
+        },
+        cursor: "pointer"
+      }
+    }}>
       <CardHeader
         sx={{ height: 80, textAlign: 'center', fontSize: 30 }}
         title={props.name}

@@ -6,7 +6,7 @@ import { Box } from '@mui/material';
 
 export default function AdminMain({ children }) {
   const SPACING = 8;
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = useResponsive('up', 'sm');
 
   return (
     <>

@@ -4,12 +4,10 @@ import './CartView.css'
 
 import { useEffect } from 'react'
 
-import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography';
+import { Card, Button, Box, Typography, Divider } from '@mui/material';
 
-import ProductDetailContainer from '../Product/ProductDetailView';
 import { useCartContext } from '../../../context/CartContext';
+import ProductCartCard from '../../../components/ProductCartCard';
 
 export default function CartView() {
   const { items, clearCart } = useCartContext();
@@ -17,8 +15,6 @@ export default function CartView() {
   useEffect(() => {
     console.log('items', items);
   }, [items]);
-  
-
   return (
     <div className="item-list-container">
       <Typography variant="h4" gutterBottom component={"div"} sx={{ mt: 5 }}>
@@ -26,37 +22,105 @@ export default function CartView() {
       </Typography>
 
       {items.length > 0 ? (
-          <Box>
-            <Box align='center'>
-              <Button 
-              onClick={() => clearCart()} 
-              sx={{
-                color: 'black',
-                backgroundColor: '#cebd22',
-                height: 60,
-                minWidth: 60,
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                '&:hover': { backgroundColor: '#e6d225' }
-              }}>Comprar</Button>
+        <Box>
+          <Box sx={{ py: { sm: 3 }, display: 'flex', width: '100%', justifyContent: 'center', alignItems: { xs: 'center', sm: 'initial' }, flexDirection: { xs: 'column', sm: 'row' } }}>
+            <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
+              {items.map((item) => {
+                const payload = { amount: item.amount, ...item.product }
+                return (
+                  <>
+                    <ProductCartCard key={item.product.id} payload={payload} />
+                  </>
+                )
+              })}
             </Box>
-            <Box sx={{ display: "flex", flexWrap: "wrap", margin: "0 auto" }}>
-              {
-                items.map((item) => {
-                  return <ProductDetailContainer key={item.product.id} context={{ type: "CART", payload: item.product }} />
-                })
-              }
-            </Box>
-          </Box>
-        ) : (
-          <Typography variant="h5" gutterBottom component={"div"}>
-            No hay productos en el carrito
-          </Typography>
-        )
-      }
+            <Card sx={{
+              width: '300px',
+              height: '150px',
+              ml: '30px',
+              borderRadius: 0,
+              display: 'flex',
+              alignContent: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column'
+            }}>
+              <Typography variant='bold'>
+                Resumen de Compra
+              </Typography>
+              <Typography sx={{ marginTop: '8px' }}>
+                Total:
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', alignContent: 'center' }}>
+                <Button
+                  onClick={() => clearCart()}
+                  sx={{
+                    marginTop: '8px',
+                    color: 'black',
+                    width: '45%',
+                    minWidth: 60,
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    '&:hover': { backgroundColor: '#e6d225' },
+                    background: 'linear-gradient(135deg, #FFEE00 0%, #D6C800 50%, #F7E700 100%)',
 
+                    // animated gradient
+                    animation: 'gradientShift 8s ease infinite',
+
+                    // glass-morphism highlight
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'rgba(255, 255, 255, 0.1)',
+                    },
+
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      boxShadow: '0 12px 32px rgba(0, 0, 0, 0.2)',
+                    },
+
+                    // keyframes for background animation
+                    '@keyframes gradientShift': {
+                      '0%': { backgroundPosition: '0% 50%' },
+                      '50%': { backgroundPosition: '100% 50%' },
+                      '100%': { backgroundPosition: '0% 50%' },
+                    },
+                  }}
+                >
+                  Comprar
+                </Button>
+                <Button
+                  onClick={() => clearCart()}
+                  sx={{
+                    marginTop: '8px',
+                    color: 'white',
+                    backgroundColor: '#121212',
+                    width: '40%',
+                    minWidth: 60,
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    '&:hover': { backgroundColor: 'rgba(255, 0, 0, 0.812)' }
+                  }}
+                >
+                  Borrar
+                </Button>
+              </Box>
+            </Card>
+          </Box>
+        </Box>
+      ) : (
+        <Typography variant="h5" gutterBottom component={"div"}>
+          No hay productos en el carrito
+        </Typography>
+      )
+      }
     </div>
   );
 };

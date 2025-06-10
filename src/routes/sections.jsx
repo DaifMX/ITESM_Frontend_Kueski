@@ -6,6 +6,7 @@ import StoreLayout from "../layout/StoreLayout";
 
 import RequireAuth from "./components/RequieresAuth";
 import PersistLogin from "./components/PersistLogin";
+import UserOrdersView from "../views/Shop/Orders/UserOrdersView";
 
 
 export const HomeView = lazy(() => import('../views/Admin/Home/Home'));
@@ -28,20 +29,17 @@ export default function AppRoutes() {
     const routes = useRoutes([
         { path: '/register', element: <RegisterView /> },
         { path: '/login', element: <LoginView /> },
-
-        { path: '/canceled/:orderId', element: <OrderCanceledView /> },
-        { path: '/failed/:orderId', element: <OrderFailedView /> },
-        { path: '/success/:orderId', element: <OrderSuccessView /> },
-        { path: '/reject/:orderId', element: <OrderRejectView /> },
         {
-            element: <StoreLayout />,
+            element: <PersistLogin />,
             children: [
-                { index: true, element: <ProductListView /> },
-                { path: 'product/:productId', element: <ProductDetailView /> },
-                { path: 'category/:categoryId', element: <ProductListView /> },
                 {
-                    element: <PersistLogin />,
+                    element: <StoreLayout />,
                     children: [
+                        { index: true, element: <ProductListView /> },
+                        { path: 'product/:productId', element: <ProductDetailView /> },
+                        { path: 'category/:categoryId', element: <ProductListView /> },
+                        { path: 'my-orders', element: <UserOrdersView /> },
+                        { path: '*', element: <h1>Error: 404</h1> },
                         {
                             element: <RequireAuth allowedRoles={['USER', 'ADMIN']} />,
                             children: [
@@ -53,67 +51,48 @@ export default function AppRoutes() {
                         },
                     ],
                 },
-                { path: '*', element: <h1>Error: 404</h1> },
+                {
+                    element: <RequireAuth allowedRoles={['USER', 'ADMIN']} />,
+                    children: [
+                        { path: '/canceled/:orderId', element: <OrderCanceledView /> },
+                        { path: '/failed/:orderId', element: <OrderFailedView /> },
+                        { path: '/success/:orderId', element: <OrderSuccessView /> },
+                        { path: '/reject/:orderId', element: <OrderRejectView /> },
+                    ]
+                },
             ],
         },
-
-        // Admin section:
         {
-
             element: <PersistLogin />,
             children: [
                 {
-                    path: '/admin',
-                    element: <AdminLayout />,
+                    element: <RequireAuth allowedRoles={['ADMIN']} />,
                     children: [
-
                         // Home route (protected)
                         {
-                            element: <RequireAuth allowedRoles={['ADMIN']} />,
+                            path: '/admin/',
+                            element: <AdminLayout />,
                             children: [
+                                {
+                                    index: true,
+                                    element: <Navigate to='home' replace />
+                                },
                                 {
                                     path: 'home',
                                     element: <HomeView />
-
-                                }
-                            ],
-                        },
-                        {
-                            element: <RequireAuth allowedRoles={['ADMIN']} />,
-                            children: [
+                                },
                                 {
                                     path: 'users',
                                     element: <UserView />
-
-                                }
-                            ],
-                        },
-                        // Products route (protected)
-                        {
-                            element: <RequireAuth allowedRoles={['ADMIN']} />,
-                            children: [
+                                },
                                 {
                                     path: 'products',
                                     element: <ProductView />
-
-                                }
-                            ],
-                        },
-                        // Orders route (protected)
-                        {
-                            element: <RequireAuth allowedRoles={['ADMIN']} />,
-                            children: [
+                                },
                                 {
                                     path: 'orders',
                                     element: <OrderView />
-
-                                }
-                            ],
-                        },
-                        // Admin fallback route (protected)
-                        {
-                            element: <RequireAuth allowedRoles={['ADMIN']} />,
-                            children: [
+                                },
                                 {
                                     path: '*',
                                     element: <Navigate to="/admin/home" replace />

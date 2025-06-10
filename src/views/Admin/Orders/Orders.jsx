@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router';
 
 import {
     Table, TableBody, TableCell, TableContainer, TableHead,
-    TableRow, Paper, Box, Typography, Button, Collapse, IconButton
+    TableRow, Paper, Box, Typography, Button, Collapse, IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -53,10 +57,10 @@ export default function Orders() {
                 <Table sx={{ minWidth: 700 }}>
                     <TableHead>
                         <TableRow>
-                            <HeaderCell>Cliente</HeaderCell>
+                            <HeaderCell>Fecha de Creación</HeaderCell>
                             <HeaderCell>Total</HeaderCell>
                             <HeaderCell>Status</HeaderCell>
-                            <HeaderCell>Fecha de Creación</HeaderCell>
+                            <HeaderCell>Cliente</HeaderCell>
                             <HeaderCell>Productos</HeaderCell>
                         </TableRow>
                     </TableHead>
@@ -64,35 +68,66 @@ export default function Orders() {
                         {orders?.map((row, index) => (
                             <>
                                 <TableRow key={index}>
-                                    <TableCell>
+                                    <TableCell sx={{ color: '#fff' }}>{row.createdAt}</TableCell>
+                                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.total}</TableCell>
+                                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.status}</TableCell>
+                                    <TableCell align='center'>
                                         <IconButton onClick={() => toggleClient(index)}>
                                             {openClientRow === index ? <ExpandLessIcon sx={{ color: '#fff' }} /> : <ExpandMoreIcon sx={{ color: '#fff' }} />}
                                         </IconButton>
                                     </TableCell>
-                                    <TableCell sx={{ color: '#fff' }}>{row.total}</TableCell>
-                                    <TableCell sx={{ color: '#fff' }}>{row.status}</TableCell>
-                                    <TableCell sx={{ color: '#fff' }}>{row.createdAt}</TableCell>
-                                    <TableCell>
+                                    <TableCell align='center'>
                                         <IconButton onClick={() => toggleProducts(index)}>
                                             {openProductRow === index ? <ExpandLessIcon sx={{ color: '#fff' }} /> : <ExpandMoreIcon sx={{ color: '#fff' }} />}
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell colSpan={6} sx={{ p: 0, bgcolor: '#1e1e1e' }}>
+                                    <TableCell align='center' colSpan={6} sx={{ p: 0 }}>
                                         <Collapse in={openClientRow === index} timeout="auto" unmountOnExit>
-                                            <Box sx={{ p: 2, pl: 4, color: '#ccc' }}>
-                                                <Typography variant="subtitle2">Información del Cliente:</Typography>
-                                                <ul>
-                                                    <li key={`${index}-name`}>{`Nombre completo: ${row.user.firstName} ${row.user.lastName}`}</li>
-                                                    <li key={`${index}-phoneNumber`}>{`Número telefónico: ${row.user.phoneNumber}`}</li>
-                                                </ul>
+                                            <Box
+                                                sx={{
+                                                    p: 2,
+                                                    pl: 4,
+                                                    bgcolor: 'background.paper',
+                                                    borderRadius: 1,
+                                                    boxShadow: 1,
+                                                }}
+                                            >
+                                                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+                                                    <Typography variant="subtitle2" color="text.secondary">
+                                                        Información del Cliente
+                                                    </Typography>
+                                                    <Divider flexItem orientation="horizontal" sx={{ mx: 1 }} />
+                                                </Stack>
+
+                                                <List dense disablePadding>
+                                                    <ListItem sx={{ py: 0.5 }}>
+                                                        <ListItemIcon sx={{ minWidth: 32 }}>
+                                                            <PersonIcon fontSize="small" color="action" />
+                                                        </ListItemIcon>
+                                                        <ListItemText
+                                                            primary={`${row.user.firstName} ${row.user.lastName}`}
+                                                            secondary="Nombre completo"
+                                                        />
+                                                    </ListItem>
+
+                                                    <ListItem sx={{ py: 0.5 }}>
+                                                        <ListItemIcon sx={{ minWidth: 32 }}>
+                                                            <PhoneIcon fontSize="small" color="action" />
+                                                        </ListItemIcon>
+                                                        <ListItemText
+                                                            primary={row.user.phoneNumber}
+                                                            secondary="Número telefónico"
+                                                        />
+                                                    </ListItem>
+                                                </List>
                                             </Box>
                                         </Collapse>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell colSpan={6} sx={{ p: 0, bgcolor: '#1e1e1e' }}>
+                                    <TableCell align='center' colSpan={6} sx={{ p: 0, bgcolor: '#1e1e1e' }}>
                                         <Collapse in={openProductRow === index} timeout="auto" unmountOnExit>
                                             <Box sx={{ p: 2, pl: 4, color: '#ccc' }}>
                                                 <Typography variant="subtitle2">Productos pedidos:</Typography>
