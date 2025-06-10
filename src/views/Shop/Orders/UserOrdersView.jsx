@@ -42,6 +42,10 @@ export default function UserOrdersView() {
     getAll();
   }, []);
 
+  const handlePay = async (url) => {
+      window.location.href = url;
+  };
+
   const handleCancelOrder = async (orderUuid) => {
     let res;
     try {
@@ -90,7 +94,6 @@ export default function UserOrdersView() {
         <Typography variant={'h4'} gutterBottom sx={{ color: '#fff' }}>
           Órdenes
         </Typography>
-
         <Box
           sx={{
             display: 'grid',
@@ -134,9 +137,20 @@ export default function UserOrdersView() {
                   <Box mt={1}>{statusChip(order.status)}</Box>
                   {order.status === 'pending' ?
                     <Box>
+                      <Button onClick={() => handlePay(order.kueskiOrderUrl)} variant='text' sx={{
+                        textAlign: 'center',
+                        width: '40%',
+                        marginTop: '8px',
+                        height: '32px',
+                        borderColor: '#CEBD22',
+                        color: '#CEBD22',
+                        '&:hover': { backgroundColor: '#re' }
+                      }}>
+                        Pagar
+                      </Button>
                       <Button onClick={() => handleCancelOrder(order.uuid)} variant='text' sx={{
                         textAlign: 'center',
-                        width: '45%',
+                        width: '40%',
                         marginTop: '8px',
                         height: '32px',
                         borderColor: 'red',
