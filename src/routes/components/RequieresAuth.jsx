@@ -13,14 +13,11 @@ const RequireAuth = ({ allowedRoles }) => {
 
     useEffect(()=>{
         if ( user.role && !cookies.refreshToken && !firstRender) setUser({});
-        console.log('first render', firstRender)
-        console.log('cookies', cookies)
     }, [cookies.refreshToken]);
 
 
     useEffect(()=>{
      if (firstRender) setFirstRender(false);
-     console.log('penipenis')
     });
 
     if (!allowedRoles?.includes(user.role)) return <Navigate to="/unauthorized" state={{ from: location }} replace />

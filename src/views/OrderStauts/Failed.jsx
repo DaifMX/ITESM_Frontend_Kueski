@@ -17,17 +17,17 @@ export default function OrderRejectView() {
         <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
           <ErrorOutlineIcon color="error" sx={{ fontSize: 64 }} />
           <Typography variant="h5" component="h2">
-            Order Failed!
+            ¡Oops!
           </Typography>
           <Typography variant="body1" align="center">
-            Unfortunately, your order{' '}
+            Algo sucedio, la orden {' '}
             <Box component="span" sx={{ fontWeight: 'medium' }}>
               #{params.orderId}
             </Box>{' '}
-            could not be processed.
+            no pudo ser procesada.
           </Typography>
           <Button variant="contained" color="error" onClick={() => navigate('/')} sx={{ mt: 2 }}>
-            Go to store
+            Volver a tienda
           </Button>
         </CardContent>
       </Card>

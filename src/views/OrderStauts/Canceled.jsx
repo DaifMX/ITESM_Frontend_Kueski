@@ -17,17 +17,17 @@ export default function OrderCanceledView() {
                 <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                     <CheckCircleIcon color="success" sx={{ fontSize: 64 }} />
                     <Typography variant="h5" component="h2">
-                        Order Canceled Successfully!
+                        Orden cancelada
                     </Typography>
                     <Typography variant="body1" align="center">
-                        Your order{' '}
+                        La orden {' '}
                         <Box component="span" sx={{ fontWeight: 'medium' }}>
                             #{params.orderId}
                         </Box>{' '}
-                        has been canceled successfully.
+                        fue cancelada correctamente.
                     </Typography>
                     <Button variant="contained" onClick={() => navigate(`/`)} sx={{ mt: 2 }}>
-                        Go to store
+                        Volver a tienda
                     </Button>
                 </CardContent>
             </Card>

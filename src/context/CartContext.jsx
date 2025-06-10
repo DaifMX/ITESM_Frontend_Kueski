@@ -80,9 +80,7 @@ export const CartProvider = ({ children }) => {
       // Successfull...
       if (res.status === 201) {
         clearCart();
-        alert('Orden completada. Recibiras una URL para realizar tu págo atravez de WhatsApp pronto. O dirigete a "Mis ordenes".');
       }
-      console.log('end buy pipeline');
     } catch (error) {
       console.error(error);
     }

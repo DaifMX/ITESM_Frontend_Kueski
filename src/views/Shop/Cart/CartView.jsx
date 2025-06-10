@@ -2,9 +2,9 @@
 
 import './CartView.css'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Card, Button, Box, Typography } from '@mui/material';
+import { Card, Button, Box, Typography, Dialog, DialogActions, DialogTitle, DialogContent } from '@mui/material';
 
 import { fCurrency } from '../../../utils/format-number';
 
@@ -13,6 +13,18 @@ import ProductCartCard from '../../../components/ProductCartCard';
 
 export default function CartView() {
   const { items, clearCart, buy, total } = useCartContext();
+
+  const [purchaseConfirmed, setPurhcasedConfirmed] = useState(false);
+
+  const handleBuyBtn = async () => {
+    await buy();
+    setPurhcasedConfirmed(true);
+  };
+
+  const handleConfirmedDiagBtn = async () => {
+
+    setPurhcasedConfirmed(false);
+  };
 
   useEffect(() => {
     console.log('items', items);
@@ -26,6 +38,19 @@ export default function CartView() {
 
       {items.length > 0 ? (
         <Box>
+          <Dialog open={purchaseConfirmed}>
+            <DialogTitle>Orden recibida</DialogTitle>
+            <DialogContent>
+              <Typography>
+                Tu orden fue recibida, pronto recibiras un link a tu WhatsApp con tu link de pago. 
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleConfirmedDiagBtn} color="primary">
+                Regresar
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Box sx={{ py: { sm: 3 }, display: 'flex', width: '100%', justifyContent: 'center', alignItems: { xs: 'center', sm: 'initial' }, flexDirection: { xs: 'column', sm: 'row' } }}>
             <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
               {items.map((item) => {
@@ -45,7 +70,7 @@ export default function CartView() {
               alignContent: 'center',
               justifyContent: 'center',
               flexDirection: 'column',
-              ml: { sm: '5px' } 
+              ml: { sm: '5px' }
             }}>
               <Typography variant='bold'>
                 Resumen de Compra
@@ -53,12 +78,12 @@ export default function CartView() {
               <Typography sx={{ marginTop: '8px' }}>
                 {`Total: ${fCurrency(total)}`}
               </Typography>
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', alignContent: 'center'}}>
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', alignContent: 'center' }}>
                 <Button
-                  onClick={() => buy()}
+                  onClick={() => handleBuyBtn()}
                   sx={{
                     marginTop: '8px',
-                    color: 'black',
+                    color: 'white',
                     width: '45%',
                     minWidth: 60,
                     fontWeight: 700,
@@ -66,7 +91,7 @@ export default function CartView() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     '&:hover': { backgroundColor: '#e6d225' },
-                    background: 'linear-gradient(135deg, #FFEE00 0%, #D6C800 50%, #F7E700 100%)',
+                    background: 'linear-gradient(135deg,rgb(20, 170, 35) 0%,rgb(23, 204, 26) 50%,rgb(25, 247, 0) 100%)',
 
                     // animated gradient
                     animation: 'gradientShift 8s ease infinite',
@@ -95,7 +120,7 @@ export default function CartView() {
                     },
                   }}
                 >
-                  Comprar
+                  Pagar con Kueski
                 </Button>
                 <Button
                   onClick={() => clearCart()}
