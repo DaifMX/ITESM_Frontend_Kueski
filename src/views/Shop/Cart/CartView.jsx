@@ -2,9 +2,7 @@
 
 import './CartView.css'
 
-import { useState } from 'react'
-
-import { Card, Button, Box, Typography, Dialog, DialogActions, DialogTitle, DialogContent } from '@mui/material';
+import { Card, Button, Box, Typography } from '@mui/material';
 
 import { fCurrency } from '../../../utils/format-number';
 
@@ -20,7 +18,8 @@ export default function CartView() {
 
   const handleBuyBtn = async () => {
     const res = await buy();
-    if (res.status === 201)
+    console.log(res);
+    if (res)
       Swal.fire({
         icon: 'success',
         title: '¡Tu pedido ha sido confirmado!',

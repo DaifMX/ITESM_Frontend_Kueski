@@ -5,6 +5,7 @@ const orderRoutes = {
     getByUuid: async (uuid) => axiosInstance.get(`/order/getByUuid/${uuid}`),
     getAdminDashboardInfo: async () => axiosInstance.get(`/order/getAdminDashboardInfo`),
     create: async (entry) => axiosInstance.post('/order/create', entry),
+    cancel: async (uuid) => axiosInstance.patch(`/order/cancel/${uuid}`),
 };
 
 export default orderRoutes;

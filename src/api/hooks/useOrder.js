@@ -58,5 +58,20 @@ export default function useOrder() {
         }
     };
 
-    return { orders, loading, error, response, create, getAll, getAdminDashboardInfo };
+    const cancel = async (uuid) => {
+        setLoading(true);
+        try {
+            const res = await orderRoutes.cancel(uuid);
+            setResponse(res.data.payload);
+            
+            return res;
+        } catch (error) {
+            setError(error);
+            throw error;
+        } finally { 
+            setLoading(false);
+        }
+    };
+
+    return { orders, loading, error, response, create, getAll, getAdminDashboardInfo, cancel };
 };
