@@ -18,7 +18,7 @@ export default function CartView() {
 
   const handleBuyBtn = async () => {
     try {
-      const res = await buy();
+      await buy();
       Swal.fire({
         icon: 'success',
         title: '¡Tu pedido ha sido confirmado!',

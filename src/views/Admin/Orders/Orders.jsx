@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 
 import {
     Table, TableBody, TableCell, TableContainer, TableHead,
-    TableRow, Paper, Box, Typography, Button, Collapse, 
+    TableRow, Paper, Box, Typography, Button, Collapse,
     IconButton, Divider, ListItem, ListItemIcon,
     ListItemText, Stack, List
 } from '@mui/material';
@@ -60,10 +60,10 @@ export default function Orders() {
                     <TableHead>
                         <TableRow>
                             <HeaderCell>Fecha de Creación</HeaderCell>
-                            <HeaderCell>Total</HeaderCell>
-                            <HeaderCell>Status</HeaderCell>
-                            <HeaderCell>Cliente</HeaderCell>
-                            <HeaderCell>Productos</HeaderCell>
+                            <HeaderCell sx={{ textAlign: 'center' }}>Total</HeaderCell>
+                            <HeaderCell sx={{ textAlign: 'center' }}>Status</HeaderCell>
+                            <HeaderCell sx={{ textAlign: 'center' }}>Cliente</HeaderCell>
+                            <HeaderCell sx={{ textAlign: 'center' }}>Productos</HeaderCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

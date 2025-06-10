@@ -141,8 +141,6 @@ export default function Products() {
     const navigate = useNavigate();
     const { products, getAll, response, create, uploadImg, remove, updateStock } = useProduct();
 
-    const [prodStock, setProdStock] = useState(null);
-
     const [anchorEl, setAnchorEl] = useState(null);
     const [selected, setSelected] = useState(null);
 
@@ -229,10 +227,6 @@ export default function Products() {
         }
     };
 
-    const handleStockChange = (id, rawValue) => {
-        setStockForm(rows => rows.map(r => r.id === id ? { ...r, stock: value } : r));
-    };
-
     const handleStockBlur = (id, newStock) => {
         updateStock(id, { stock: newStock });
     };
@@ -277,17 +271,12 @@ export default function Products() {
                     </TableHead>
                     <TableBody>
                         {products?.map((row, i) => (
-
                             <TableRowComponent
                                 key={i}
                                 handleStockBlur={handleStockBlur}
-                                
                                 handleOpenMenu={handleOpenMenu}
-
                                 row={row}
                             />
-
-
                         ))}
                     </TableBody>
                 </Table>
