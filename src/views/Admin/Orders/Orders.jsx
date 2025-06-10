@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router';
 
 import {
     Table, TableBody, TableCell, TableContainer, TableHead,
-    TableRow, Paper, Box, Typography, Button, Collapse, IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
+    TableRow, Paper, Box, Typography, Button, Collapse, 
+    IconButton, Divider, ListItem, ListItemIcon,
     ListItemText, Stack,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
