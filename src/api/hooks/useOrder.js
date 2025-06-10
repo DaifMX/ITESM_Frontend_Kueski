@@ -25,15 +25,14 @@ export default function useOrder() {
         } finally {
             setLoading(false);
         }
-    };
+    }; 
 
     const getAll = async (userId) => {
         setLoading(true);
         try {
-            if (!userId && user.role !== 'ADMIN') throw new Error('Forbidden');
-
             const res = await orderRoutes.getAll(userId);
             setOrders(res.data.payload);
+            
             return res;
         } catch (error) {
             setError(error);
