@@ -38,15 +38,12 @@ export default function AppRoutes() {
                         { index: true, element: <ProductListView /> },
                         { path: 'product/:productId', element: <ProductDetailView /> },
                         { path: 'category/:categoryId', element: <ProductListView /> },
-                        { path: 'my-orders', element: <UserOrdersView /> },
                         { path: '*', element: <h1>Error: 404</h1> },
                         {
                             element: <RequireAuth allowedRoles={['USER', 'ADMIN']} />,
                             children: [
-                                {
-                                    path: 'cart',
-                                    element: <CartView />
-                                },
+                                { path: 'my-orders', element: <UserOrdersView /> },
+                                { path: 'cart', element: <CartView /> },
                             ]
                         },
                     ],
