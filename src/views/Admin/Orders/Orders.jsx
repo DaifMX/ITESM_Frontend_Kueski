@@ -8,9 +8,13 @@ import {
     ListItemText, Stack, List
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {
+    ExpandMore,
+    ExpandLess,
+    ArrowBack,
+    ListItem,
+    Person
+} from '@mui/icons-material'
 
 import useOrder from '../../../api/hooks/useOrder';
 
@@ -47,7 +51,7 @@ export default function Orders() {
                 Lista de órdenes
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                <Button startIcon={<ArrowBackIcon />} variant="contained" sx={{ bgcolor: '#fff' }} onClick={() => navigate('./home')}>
+                <Button startIcon={<ArrowBack />} variant="contained" sx={{ bgcolor: '#fff' }} onClick={() => navigate('./home')}>
                     Volver
                 </Button>
             </Box>
@@ -71,12 +75,12 @@ export default function Orders() {
                                     <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.status}</TableCell>
                                     <TableCell align='center'>
                                         <IconButton onClick={() => toggleClient(index)}>
-                                            {openClientRow === index ? <ExpandLessIcon sx={{ color: '#fff' }} /> : <ExpandMoreIcon sx={{ color: '#fff' }} />}
+                                            {openClientRow === index ? <ExpandLess sx={{ color: '#fff' }} /> : <ExpandMore sx={{ color: '#fff' }} />}
                                         </IconButton>
                                     </TableCell>
                                     <TableCell align='center'>
                                         <IconButton onClick={() => toggleProducts(index)}>
-                                            {openProductRow === index ? <ExpandLessIcon sx={{ color: '#fff' }} /> : <ExpandMoreIcon sx={{ color: '#fff' }} />}
+                                            {openProductRow === index ? <ExpandLess sx={{ color: '#fff' }} /> : <ExpandMore sx={{ color: '#fff' }} />}
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
@@ -101,9 +105,9 @@ export default function Orders() {
 
                                                 <List dense disablePadding>
                                                     <ListItem sx={{ py: 0.5 }}>
-                                                        <ListItemIcon sx={{ minWidth: 32 }}>
-                                                            <PersonIcon fontSize="small" color="action" />
-                                                        </ListItemIcon>
+                                                        <ListItem sx={{ minWidth: 32 }}>
+                                                            <Person fontSize="small" color="action" />
+                                                        </ListItem>
                                                         <ListItemText
                                                             primary={`${row.user.firstName} ${row.user.lastName}`}
                                                             secondary="Nombre completo"
