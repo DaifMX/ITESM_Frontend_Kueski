@@ -78,7 +78,7 @@ export const CartProvider = ({ children }) => {
       const res = await create({ products: payload });
       console.log('Order Created Response ===>', res);
       // Successfull...
-      if (res.status === 200) {
+      if (res.status === 201) {
         clearCart();
         alert('Orden completada. Recibiras una URL para realizar tu págo atravez de WhatsApp pronto. O dirigete a "Mis ordenes".');
       }
