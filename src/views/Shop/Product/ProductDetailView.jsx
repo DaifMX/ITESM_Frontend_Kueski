@@ -50,25 +50,25 @@ export default function ProductDetailView({ context }) {
             display: 'flex',
             height: '100%',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
           }}>
             <Box sx={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: context?.type === 'CART' ? 'none' : 'center',
+              justifyContent: 'center',
               maxWidth: '500px',
               alignItems: 'center',
               borderRadius: 2,
               margin: "10px"
             }}>
-              <Typography variant="h4" sx={{ color: 'white', textAlign: 'center', mb: 4, height: "20px" }}>
+              <Typography variant="h4" sx={{ color: 'white', textAlign: 'center', mb: { xs: 10, sm: 4 }, height: "20px" }}>
                 {product.name}
               </Typography>
 
               {/* Carta de Control de Producto */}
-              <Card sx={{ width: "100%", mb: 4 }}>
+              <Card sx={{ width: {xs: "80%", sm: '100%'}, mb: 4 }}>
                 <CardMedia
-                  sx={{ height: 300, width: 500 }}
+                  sx={{ height: 300, width: { xs: 300, sm: 500 } }}
                   image={`${import.meta.env.VITE_BASE_API_URL}`.replace('/api/', `${product.imgPath}`)}
                   title={product.name}
                 />
@@ -144,7 +144,7 @@ export default function ProductDetailView({ context }) {
               {/* Carta de descripción del Producto */}
               {
                 context?.type !== 'CART' ? (
-                  <Card sx={{ width: 500 }}>
+                  <Card sx={{ width: { xs: "80%", sm: 500 } }}>
                     <CardContent>
                       <Typography variant="h5" component="div" sx={{ mb: 3, height: "150px", overflow: "scroll" }}>
                         {product.description}

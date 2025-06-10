@@ -50,7 +50,7 @@ export default function Orders() {
     return (
         <Box sx={{ bgcolor: '#121212', color: '#fff', minHeight: '100vh', px: { xs: 1, lg: 6 } }}>
             <Typography variant="h6" gutterBottom>
-                Lista de órdenes
+                Lista de Órdenes
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                 <Button startIcon={<ArrowBack />} variant="contained" sx={{ bgcolor: '#fff' }} onClick={() => navigate('./home')}>
