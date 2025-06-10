@@ -12,8 +12,8 @@ import {
     ExpandMore,
     ExpandLess,
     ArrowBack,
-    ListItem,
-    Person
+    Person,
+    Phone,
 } from '@mui/icons-material'
 
 import useOrder from '../../../api/hooks/useOrder';
@@ -105,9 +105,9 @@ export default function Orders() {
 
                                                 <List dense disablePadding>
                                                     <ListItem sx={{ py: 0.5 }}>
-                                                        <ListItem sx={{ minWidth: 32 }}>
+                                                        <ListItemIcon sx={{ minWidth: 32 }}>
                                                             <Person fontSize="small" color="action" />
-                                                        </ListItem>
+                                                        </ListItemIcon>
                                                         <ListItemText
                                                             primary={`${row.user.firstName} ${row.user.lastName}`}
                                                             secondary="Nombre completo"
@@ -116,7 +116,7 @@ export default function Orders() {
 
                                                     <ListItem sx={{ py: 0.5 }}>
                                                         <ListItemIcon sx={{ minWidth: 32 }}>
-                                                            <PhoneIcon fontSize="small" color="action" />
+                                                            <Phone fontSize="small" color="action" />
                                                         </ListItemIcon>
                                                         <ListItemText
                                                             primary={row.user.phoneNumber}
