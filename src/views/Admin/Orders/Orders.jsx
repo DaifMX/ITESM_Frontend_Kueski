@@ -16,6 +16,8 @@ import {
     Phone,
 } from '@mui/icons-material'
 
+import { fCurrency } from '../../../utils/format-number';
+
 import useOrder from '../../../api/hooks/useOrder';
 
 const HeaderCell = styled(TableCell)(() => ({
@@ -71,7 +73,7 @@ export default function Orders() {
                             <>
                                 <TableRow key={index}>
                                     <TableCell sx={{ color: '#fff' }}>{row.createdAt}</TableCell>
-                                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.total}</TableCell>
+                                    <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{fCurrency(row.total)}</TableCell>
                                     <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.status}</TableCell>
                                     <TableCell align='center'>
                                         <IconButton onClick={() => toggleClient(index)}>
