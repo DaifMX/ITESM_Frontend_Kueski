@@ -14,6 +14,8 @@ const RequireAuth = ({ allowedRoles }) => {
 
     useEffect(()=>{
         if ( user.role && !cookies.refreshToken && !firstRender) setUser({});
+        console.log('first render', firstRender)
+        console.log('cookies', cookies)
     }, [cookies.refreshToken]);
 
     useEffect(()=>{
