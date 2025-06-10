@@ -43,7 +43,7 @@ export default function RegisterView() {
                     allowOutsideClick: false,
                     showCancelButton: false,
                 }).then((result) => {
-                    if (result.isConfirmed || result.isDismissed) navigate('../');
+                    if (result.isConfirmed || result.isDismissed) navigate('/login');
                 });
             }
         };

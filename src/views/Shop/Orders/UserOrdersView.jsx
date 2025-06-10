@@ -6,25 +6,17 @@ import {
   Paper,
   Typography,
   Chip,
-  Stack
+  Stack,
 } from '@mui/material';
 import {
   LocalShipping,
   Cancel,
   HourglassTop,
 } from '@mui/icons-material';
+import Swal from 'sweetalert2';
 
 import useOrder from '../../../api/hooks/useOrder';
 import { fCurrency } from '../../../utils/format-number';
-
-// const orders = [
-//   { uuid: 'asda-asdasd4-gggb54-1s001', total: 8000, status: 'paid', products: [2, 3, 4, 5, 5] },
-//   { uuid: 'asda-asdasd4-gggb54-1s002', total: 8000, status: 'pending', products: [1] },
-//   { uuid: 'asda-asdasd4-gggb54-1s003', total: 8000, status: 'cancelled', products: [1, 2, 3] },
-//   { uuid: 'asda-asdasd4-gggb54-1s004', total: 8000, status: 'paid', products: [1, 2, 3] },
-//   { uuid: 'asda-asdasd4-gggb54-1s005', total: 8000, status: 'pending', products: [1, 2, 3] },
-//   { uuid: 'asda-asdasd4-gggb54-1s006', total: 8000, status: 'expired', products: [1, 2, 3] }
-// ];
 
 const statusChip = (status) => {
   const baseStyle = { color: '#fff' };
@@ -44,24 +36,72 @@ export default function UserOrdersView() {
   const { orders, getAll, cancel } = useOrder();
 
   useEffect(() => {
-      getAll();
-      console.log(orders);
-  }, [])
+    getAll();
+  }, []);
 
-  const handleCancelOrder = (orderUuid) => {
-    console.log(orderUuid);
+  const handleCancelOrder = async (orderUuid) => {
+    let res;
+    try {
+      res = await cancel(orderUuid);
+
+      if (res) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Orden cancelada',
+          text: res.data.message,
+          heightAuto: false,
+          background: '#1e1e1e',
+          color: '#f1f1f1',
+          confirmButtonColor: '#CEBD22',
+          confirmButtonText: 'Volver a tienda',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          showCancelButton: false,
+        });
+      }
+
+    } catch (error) {
+      console.error(error);
+      if (error instanceof AxiosError) 
+        Swal.fire({
+        icon: 'error',
+        title: '¡Oops!',
+        text: res.data.message ? res.data.message : 'Ha ocurrido un error inesperado al intentar cancelar tu orden.',
+        heightAuto: false,
+        background: '#1e1e1e',
+        color: '#f1f1f1',
+        confirmButtonColor: '#CEBD22',
+        confirmButtonText: 'Volver a tienda',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        showCancelButton: false,
+      });
+    }
   };
 
   return (
-    <Box sx={{ bgcolor: '#121212', minHeight: '100vh', p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-      <Typography variant={'h4'} gutterBottom sx={{ color: '#fff' }}>
-        Órdenes
-      </Typography>
-      <Box container sx={{ display: { xs: 'inline-flex' }, flexWrap: 'wrap'}}>
-        {orders.map((order, index) => {
-          return (
-            <Box key={index}>
+    <>
+      <Box sx={{ bgcolor: '#121212', minHeight: '100vh', p: 3, flexDirection: 'column' }}>
+        <Typography variant={'h4'} gutterBottom sx={{ color: '#fff' }}>
+          Órdenes
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, 240px)',
+            gap: 2,
+            width: {
+              xs: 'max-content',
+            },
+            maxWidth: { lg: '1300px', md: '900px', sm: '700px', xs: '400px' },
+            mx: 'auto',
+          }}
+        >
+          {orders.map((order, index) => {
+            return (
               <Paper
+                key={'cart-card-' + index}
                 elevation={4}
                 sx={{
                   p: 2,
@@ -73,6 +113,7 @@ export default function UserOrdersView() {
                   width: 240,
                   display: 'flex',
                   alignItems: 'baseline',
+
                 }}
               >
                 <Stack spacing={1} textAlign="center">
@@ -88,7 +129,15 @@ export default function UserOrdersView() {
                   <Box mt={1}>{statusChip(order.status)}</Box>
                   {order.status === 'pending' ?
                     <Box>
-                      <Button onClick={() => handleCancelOrder(order.uuid)} variant='text' sx={{ width: '45%', marginTop: '8px', height: '32px', borderColor: 'red', color: 'red', '&:hover': { bgColor: 'black' } }}>
+                      <Button onClick={() => handleCancelOrder(order.uuid)} variant='text' sx={{
+                        textAlign: 'center',
+                        width: '45%',
+                        marginTop: '8px',
+                        height: '32px',
+                        borderColor: 'red',
+                        color: 'red',
+                        '&:hover': { backgroundColor: '#re' }
+                      }}>
                         Cancelar
                       </Button>
                     </Box> :
@@ -96,10 +145,10 @@ export default function UserOrdersView() {
                   }
                 </Stack>
               </Paper>
-            </Box>
-          );
-        })}
-      </Box>
-    </Box>
+            );
+          })}
+        </Box>
+      </Box >
+    </>
   );
 };

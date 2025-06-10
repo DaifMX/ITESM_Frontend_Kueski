@@ -7,16 +7,18 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { fCurrency } from '../utils/format-number';
 
+import { fCurrency } from '../utils/format-number';
+import { useCartContext } from '../context/CartContext';
 
 export default function ProductCartCard({ payload }) {
+  const { addToCart, removeFromCart,  } = useCartContext();
   const [item, _setItem] = useState(payload);
 
   return (
     <>
-      <Box sx={{justifyContent: 'left', mb: '5px'}}>
-        
+      <Box sx={{ justifyContent: 'left', mb: '5px' }}>
+
         <Card
           sx={{
             borderRadius: 0,
@@ -37,8 +39,8 @@ export default function ProductCartCard({ payload }) {
             alt={payload.name}
           />
           <Box >
-            <CardContent sx={{ flex: '1 0 auto', p: 1}}>
-              <Box sx={{ display: 'flex', justifyContent: {md:'space-between'}, flexDirection: { xs: 'column' }, width: { lg: '240px', xs: '240px' }, maxHeight: '120px', minHeight: '120px', textAlign: 'left'}}>
+            <CardContent sx={{ flex: '1 0 auto', p: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: { md: 'space-between' }, flexDirection: { xs: 'column' }, width: { lg: '240px', xs: '240px' }, maxHeight: '120px', minHeight: '120px', textAlign: 'left' }}>
                 <Typography component="div" variant="h6" sx={{ minWidth: '240px', maxWidth: '480px' }} >
                   {item.name}
                 </Typography>
@@ -51,15 +53,15 @@ export default function ProductCartCard({ payload }) {
                 </Typography>
               </Box>
 
-              <Box sx={{ border: 'solid 3.5px yellow', borderRadius: '20px', width: '100px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: '20px', p: '3px'}}>
-                <DeleteOutlineRoundedIcon />
+              <Box sx={{ border: 'solid 3.5px yellow', borderRadius: '20px', width: '100px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: '20px', p: '3px' }}>
+                <DeleteOutlineRoundedIcon onClick={() => removeFromCart(item.id)} />
                 <Typography
                   variant="subtitle1"
                   component="div"
                 >
                   {item ? item.amount : 1}
                 </Typography>
-                <AddRoundedIcon />
+                <AddRoundedIcon onClick={() => addToCart({amount: item.amount, product: item})} />
               </Box>
             </CardContent>
           </Box>

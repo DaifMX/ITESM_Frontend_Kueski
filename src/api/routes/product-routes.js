@@ -9,6 +9,7 @@ const productRoutes = {
             'Content-Type': 'multipart/form-data'
         },
     }),
+    updateStock: (id, stock) => axiosInstance.patch(`/product/updateStock/${id}`, stock),
     remove: (id) => axiosInstance.delete(`product/remove/${id}`),
 };
 

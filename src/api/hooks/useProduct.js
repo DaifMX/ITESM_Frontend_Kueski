@@ -56,10 +56,10 @@ export default function useProduct() {
         }
     };
 
-    const update = async (id, entry) => {
+    const updateStock = async (id, newStock) => {
         setLoading(true);
         try {
-            const res = await productRoutes.update(id, entry);
+            const res = await productRoutes.updateStock(id, newStock);
             setResponse(res.data.payload);
 
             return res;
@@ -100,5 +100,5 @@ export default function useProduct() {
         }
     };
 
-    return { products, loading, error, response, create, getAll, getById, update, uploadImg, remove };
+    return { products, loading, error, response, create, getAll, getById, updateStock, uploadImg, remove };
 };

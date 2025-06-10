@@ -37,9 +37,22 @@ const cartReducer = (state, action) => {
       return { length: state.length + 1, items: [...state.items, action.payload], total: state.total + (action.payload.product.price * action.payload.amount) };
     case "REMOVE_ITEM":
       // Lógica para eliminar un item
+      let newLength = null, items;
+
+      const productToReduce = state.items.find(item => item.product.id === action.payload);
+      productToReduce.amount -= 1;
+      items = state.items.filter(item => item.product.id !== action.payload);
+
+      if (productToReduce.amount === 0) {
+        newLength = state.length > 0 ? state.length - 1 : state.length;
+      } else {
+        items.push(productToReduce);
+      }
+
       return {
-        length: state.length > 0 ? state.length - 1 : state.length,
-        items: state.items.filter(item => item.product.id !== action.payload)
+        total: state.total - productToReduce.price,
+        length: newLength === null ? state.length : newLength,
+        items 
       };
     case "CLEAR_CART":
       return defaultState;
@@ -76,29 +89,24 @@ export const CartProvider = ({ children }) => {
     // Sends payload to API
     try {
       const res = await create({ products: payload });
-      console.log('Order Created Response ===>', res);
       // Successfull...
       if (res.status === 201) {
         clearCart();
       }
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   };
-
-  useEffect(() => {
-    console.log('state', state.length)
-  }, [state]);
 
   // Update cart in local storage
   useEffect(() => {
     if (state.items.length === 0) {
-      const items = JSON.parse(localStorage.getItem('cart'))
+      const items = JSON.parse(localStorage.getItem('cart'));
       items?.forEach(item => {
-        addToCart(item)
+        addToCart(item);
       });
     }
-    localStorage.setItem('cart', JSON.stringify(state.items))
+    localStorage.setItem('cart', JSON.stringify(state.items));
   }, [state.items]);
 
   const value = useMemo(() => ({

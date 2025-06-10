@@ -2,6 +2,7 @@ import { useEffect, useState, forwardRef, useCallback, memo } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router';
 
+import { fCurrency } from '../../../utils/format-number';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead,
     TableRow, Paper, IconButton, MenuItem, Popover, Dialog, DialogTitle,
@@ -9,9 +10,11 @@ import {
     Snackbar, Alert, Stack
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
+import {
+    MoreVert,
+    ArrowBack,
+    Add,
+} from '@mui/icons-material';
 
 import DeleteConfirmationDialog from '../../../components/DeleteConfirmationDialog';
 
@@ -53,7 +56,6 @@ const PopoverModal = memo(({
     anchorEl,
     handleClose,
     handleUploadImage,
-    handleEditButton,
     setDeleteDialogOpen,
     setAnchorEl
 
@@ -79,10 +81,6 @@ const PopoverModal = memo(({
                     onChange={handleUploadImage}
                 />
             </MenuItem>
-            <MenuItem onClick={handleEditButton}>
-                <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-                Editar
-            </MenuItem>
             <MenuItem onClick={() => {
                 setDeleteDialogOpen(true)
                 setAnchorEl(null)
@@ -95,9 +93,55 @@ const PopoverModal = memo(({
 });
 
 
+const TableRowComponent = ({
+    handleStockBlur,
+    handleOpenMenu,
+    row
+}) => {
+    const [prodStock, setProdStock] = useState(0)
+
+    useEffect(()=>{
+        setProdStock(parseInt(row.stock))
+    }, [row])
+
+    useEffect(() => {
+        console.log(prodStock)
+    }, [prodStock])
+
+
+    return (
+        <TableRow >
+            <TableCell sx={{ color: '#fff' }}>{row.name}</TableCell>
+            <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{fCurrency(row.price)}</TableCell>
+            <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.category}</TableCell>
+            <TableCell sx={{ color: '#fff' }}>{row.description}</TableCell>
+            <TableCell sx={{ color: '#fff' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <TextField
+                        type='number'
+                        value={prodStock}
+                        onBlur={() => handleStockBlur(row.id, prodStock)}
+                        onChange={(e) => setProdStock(e.target.value)}
+                    >
+                    </TextField>
+                </Box>
+            </TableCell>
+            <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.stockCommitted}</TableCell>
+            <TableCell align="center">
+                <IconButton onClick={(e) => handleOpenMenu(e, row)}>
+                    <MoreVert sx={{ color: '#fff' }} />
+                </IconButton>
+            </TableCell>
+        </TableRow>
+    )
+}
+
+
 export default function Products() {
     const navigate = useNavigate();
-    const { products, getAll, response, create, uploadImg, remove } = useProduct();
+    const { products, getAll, response, create, uploadImg, remove, updateStock } = useProduct();
+
+    const [prodStock, setProdStock] = useState(null);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [selected, setSelected] = useState(null);
@@ -120,14 +164,7 @@ export default function Products() {
         validateOnChange: true,
     });
 
-    useEffect(() => {
-
-        console.log('anchor', anchorEl)
-    }, [anchorEl])
-
     const handleOpenMenu = useCallback((event, row) => {
-        console.log('open')
-
         setAnchorEl(event.currentTarget);
         setSelected(row);
     }, []);
@@ -178,11 +215,6 @@ export default function Products() {
         handleClose();
     };
 
-    const handleEditButton = () => {
-        alert(`Editar: ${selected.name}`);
-        handleClose();
-    };
-
     const handleDeleteConfirmBtn = async () => {
         handleClose();
         try {
@@ -197,8 +229,13 @@ export default function Products() {
         }
     };
 
+    const handleStockChange = (id, rawValue) => {
+        setStockForm(rows => rows.map(r => r.id === id ? { ...r, stock: value } : r));
+    };
 
-
+    const handleStockBlur = (id, newStock) => {
+        updateStock(id, { stock: newStock });
+    };
 
     return (
         <Box sx={{ bgcolor: '#121212', color: '#fff', minHeight: '100vh', px: { xs: 1, lg: 6 } }}>
@@ -217,10 +254,10 @@ export default function Products() {
             </Typography>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                <Button startIcon={<ArrowBackIcon />} variant="contained" sx={{ bgcolor: '#fff' }} onClick={() => navigate('./home')}>
+                <Button startIcon={<ArrowBack />} variant="contained" sx={{ bgcolor: '#fff' }} onClick={() => navigate('./home')}>
                     Volver
                 </Button>
-                <Button startIcon={<AddIcon />} variant="contained" sx={{ bgcolor: '#1976d2' }} onClick={() => setOpenNewProductDialog(true)}>
+                <Button startIcon={<Add />} variant="contained" sx={{ bgcolor: '#1976d2' }} onClick={() => setOpenNewProductDialog(true)}>
                     Nuevo
                 </Button>
             </Box>
@@ -233,26 +270,24 @@ export default function Products() {
                             <HeaderCell>Precio</HeaderCell>
                             <HeaderCell>Categoria</HeaderCell>
                             <HeaderCell>Descripción</HeaderCell>
-                            <HeaderCell>Stock</HeaderCell>
+                            <HeaderCell sx={{ textAlign: 'center' }}>Stock</HeaderCell>
                             <HeaderCell sx={{ textAlign: 'center' }}>Stock Comprometido</HeaderCell>
                             <HeaderCell align="right">Opciones</HeaderCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {products?.map((row, i) => (
-                            <TableRow key={i}>
-                                <TableCell sx={{ color: '#fff' }}>{row.name}</TableCell>
-                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.price}</TableCell>
-                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.category}</TableCell>
-                                <TableCell sx={{ color: '#fff' }}>{row.description}</TableCell>
-                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.stock}</TableCell>
-                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.stockCommitted}</TableCell>
-                                <TableCell align="center">
-                                    <IconButton onClick={(e) => handleOpenMenu(e, row)}>
-                                        <MoreVertIcon sx={{ color: '#fff' }} />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
+
+                            <TableRowComponent
+                                key={i}
+                                handleStockBlur={handleStockBlur}
+                                
+                                handleOpenMenu={handleOpenMenu}
+
+                                row={row}
+                            />
+
+
                         ))}
                     </TableBody>
                 </Table>
@@ -260,7 +295,6 @@ export default function Products() {
                     anchorEl={anchorEl}
                     handleClose={handleClose}
                     handleUploadImage={handleUploadImage}
-                    handleEditButton={handleEditButton}
                     setDeleteDialogOpen={setDeleteDialogOpen}
                     setAnchorEl={setAnchorEl}
                 />
@@ -395,6 +429,6 @@ export default function Products() {
                 onConfirm={handleDeleteConfirmBtn}
                 onCancel={() => setDeleteDialogOpen(false)}
             />
-        </Box>
+        </Box >
     );
 }

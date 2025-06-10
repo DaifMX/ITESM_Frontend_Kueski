@@ -2,7 +2,7 @@
 
 import './CartView.css'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Card, Button, Box, Typography, Dialog, DialogActions, DialogTitle, DialogContent } from '@mui/material';
 
@@ -10,26 +10,34 @@ import { fCurrency } from '../../../utils/format-number';
 
 import { useCartContext } from '../../../context/CartContext';
 import ProductCartCard from '../../../components/ProductCartCard';
+import { useNavigate } from 'react-router';
+
+import Swal from 'sweetalert2';
 
 export default function CartView() {
   const { items, clearCart, buy, total } = useCartContext();
-
-  const [purchaseConfirmed, setPurhcasedConfirmed] = useState(false);
+  const navigate = useNavigate();
 
   const handleBuyBtn = async () => {
-    await buy();
-    setPurhcasedConfirmed(true);
+    const res = await buy();
+    if (res.status === 201)
+      Swal.fire({
+        icon: 'success',
+        title: '¡Tu pedido ha sido confirmado!',
+        text: 'En breve recibirás tu enlace de pago de Kueski vía WhatsApp o, si lo prefieres, puedes consultarlo en "Mis pedidos".',
+        heightAuto: false,
+        background: '#1e1e1e',
+        color: '#f1f1f1',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Ver ordenes',
+        showCancelButton: false,
+        allowEscapeKey: false,
+        allowOutsideClick: false
+      }).then((res) => {
+        if (res.isConfirmed) navigate('/my-orders');
+      });
   };
 
-  const handleConfirmedDiagBtn = async () => {
-
-    setPurhcasedConfirmed(false);
-  };
-
-  useEffect(() => {
-    console.log('items', items);
-    // console.log(total);
-  }, [items]);
   return (
     <div className="item-list-container">
       <Typography variant="h4" gutterBottom component={"div"} sx={{ mt: 5 }}>
@@ -38,19 +46,6 @@ export default function CartView() {
 
       {items.length > 0 ? (
         <Box>
-          <Dialog open={purchaseConfirmed}>
-            <DialogTitle>Orden recibida</DialogTitle>
-            <DialogContent>
-              <Typography>
-                Tu orden fue recibida, pronto recibiras un link a tu WhatsApp con tu link de pago. 
-              </Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleConfirmedDiagBtn} color="primary">
-                Regresar
-              </Button>
-            </DialogActions>
-          </Dialog>
           <Box sx={{ py: { sm: 3 }, display: 'flex', width: '100%', justifyContent: 'center', alignItems: { xs: 'center', sm: 'initial' }, flexDirection: { xs: 'column', sm: 'row' } }}>
             <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
               {items.map((item) => {
@@ -137,7 +132,7 @@ export default function CartView() {
                     '&:hover': { backgroundColor: 'rgba(255, 0, 0, 0.812)' }
                   }}
                 >
-                  Borrar
+                  Vaciar Carrito
                 </Button>
               </Box>
             </Card>
