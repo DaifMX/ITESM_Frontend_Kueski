@@ -4,16 +4,19 @@ import './CartView.css'
 
 import { useEffect } from 'react'
 
-import { Card, Button, Box, Typography, Divider } from '@mui/material';
+import { Card, Button, Box, Typography } from '@mui/material';
+
+import { fCurrency } from '../../../utils/format-number';
 
 import { useCartContext } from '../../../context/CartContext';
 import ProductCartCard from '../../../components/ProductCartCard';
 
 export default function CartView() {
-  const { items, clearCart } = useCartContext();
+  const { items, clearCart, buy, total } = useCartContext();
 
   useEffect(() => {
     console.log('items', items);
+    // console.log(total);
   }, [items]);
   return (
     <div className="item-list-container">
@@ -35,24 +38,24 @@ export default function CartView() {
               })}
             </Box>
             <Card sx={{
-              width: '300px',
+              width: '286px',
               height: '150px',
-              ml: '30px',
               borderRadius: 0,
               display: 'flex',
               alignContent: 'center',
               justifyContent: 'center',
-              flexDirection: 'column'
+              flexDirection: 'column',
+              ml: { sm: '5px' } 
             }}>
               <Typography variant='bold'>
                 Resumen de Compra
               </Typography>
               <Typography sx={{ marginTop: '8px' }}>
-                Total:
+                {`Total: ${fCurrency(total)}`}
               </Typography>
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', alignContent: 'center' }}>
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', alignContent: 'center'}}>
                 <Button
-                  onClick={() => clearCart()}
+                  onClick={() => buy()}
                   sx={{
                     marginTop: '8px',
                     color: 'black',

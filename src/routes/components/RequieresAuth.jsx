@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, Navigate, Outlet } from "react-router";
 import useAuth from "../../context/AuthContext";
-import {useCookies} from 'react-cookie'
-import useLogout from '../../api/hooks/useLogout'
+import {useCookies} from 'react-cookie';
 
 const RequireAuth = ({ allowedRoles }) => {
     const { user, setUser } = useAuth();

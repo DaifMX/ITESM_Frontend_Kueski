@@ -8,14 +8,14 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useCartContext } from '../../context/CartContext';
 
 export default function ColorBadge({handleCart}) {
-  const { total } = useCartContext()
+  const { length } = useCartContext()
   const [itemsAmount, setItemsAmount] = useState(0)
   useEffect(() => {
-    setItemsAmount(total)
-  }, [total]);
+    setItemsAmount(length)
+  }, [length]);
 
   useEffect(() => {
-    setItemsAmount(total)
+    setItemsAmount(length)
   })
 
   return (
