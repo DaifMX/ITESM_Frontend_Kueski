@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 
 import useOrder from '../../../api/hooks/useOrder';
 import { fCurrency } from '../../../utils/format-number';
+import { useNavigate } from 'react-router';
 
 const statusChip = (status) => {
   const baseStyle = { color: '#fff' };
@@ -34,6 +35,8 @@ const statusChip = (status) => {
 
 export default function UserOrdersView() {
   const { orders, getAll, cancel } = useOrder();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAll();
@@ -57,25 +60,27 @@ export default function UserOrdersView() {
           allowEscapeKey: false,
           allowOutsideClick: false,
           showCancelButton: false,
-        });
+        }).then((res) => {
+          if (res.isConfirmed) navigate('../');
+        })
       }
 
     } catch (error) {
       console.error(error);
-      if (error instanceof AxiosError) 
+      if (error instanceof AxiosError)
         Swal.fire({
-        icon: 'error',
-        title: '¡Oops!',
-        text: res.data.message ? res.data.message : 'Ha ocurrido un error inesperado al intentar cancelar tu orden.',
-        heightAuto: false,
-        background: '#1e1e1e',
-        color: '#f1f1f1',
-        confirmButtonColor: '#CEBD22',
-        confirmButtonText: 'Volver a tienda',
-        allowEscapeKey: false,
-        allowOutsideClick: false,
-        showCancelButton: false,
-      });
+          icon: 'error',
+          title: '¡Oops!',
+          text: res.data.message ? res.data.message : 'Ha ocurrido un error inesperado al intentar cancelar tu orden.',
+          heightAuto: false,
+          background: '#1e1e1e',
+          color: '#f1f1f1',
+          confirmButtonColor: '#CEBD22',
+          confirmButtonText: 'Volver a tienda',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          showCancelButton: false,
+        });
     }
   };
 

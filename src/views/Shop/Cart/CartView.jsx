@@ -17,9 +17,8 @@ export default function CartView() {
   const navigate = useNavigate();
 
   const handleBuyBtn = async () => {
-    const res = await buy();
-    console.log(res);
-    if (res)
+    try {
+      const res = await buy();
       Swal.fire({
         icon: 'success',
         title: '¡Tu pedido ha sido confirmado!',
@@ -35,6 +34,21 @@ export default function CartView() {
       }).then((res) => {
         if (res.isConfirmed) navigate('/my-orders');
       });
+
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '¡Ooops!',
+        text: 'Ocurrio un erro al intentar procesar tu orden. Vuelve a intentarlo.',
+        heightAuto: false,
+        background: '#1e1e1e',
+        color: '#f1f1f1',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Ver ordenes',
+        showCancelButton: false,
+        allowOutsideClick: false
+      });
+    }
   };
 
   return (
