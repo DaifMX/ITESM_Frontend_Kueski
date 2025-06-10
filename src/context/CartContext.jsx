@@ -75,10 +75,10 @@ export const CartProvider = ({ children }) => {
 
     // Sends payload to API
     try {
-      const res = await create(payload);
+      const res = await create({ products: payload });
       console.log('Order Created Response ===>', res);
       // Successfull...
-      if(res.status === 200) {
+      if (res.status === 200) {
         clearCart();
         alert('Orden completada. Recibiras una URL para realizar tu págo atravez de WhatsApp pronto. O dirigete a "Mis ordenes".');
       }
