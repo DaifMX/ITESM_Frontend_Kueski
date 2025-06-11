@@ -29,7 +29,7 @@ const cartReducer = (state, action) => {
         const result = { ...state, items: [...filteredArray, newProduct] };
 
         // Calcular total a pagar
-        const difference = newProduct.subtotal - oldProduct.subtotal 
+        const difference = newProduct.subtotal - oldProduct.subtotal;
         const total = state.total + difference;
         result.total = total;
 

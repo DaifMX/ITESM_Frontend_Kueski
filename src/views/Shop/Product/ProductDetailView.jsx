@@ -123,7 +123,7 @@ export default function ProductDetailView({ context }) {
                       }}> Borrar </Button>
                   ) : (
                     <Button variant="contained"
-                      onClick={() => addToCart({ product: product, amount: productQuantity })}
+                      onClick={() => addToCart({ product: product, amount: productQuantity, subtotal: product.price * productQuantity })}
                       sx={{
                         backgroundColor: '#cebd22',
                         height: 60,
