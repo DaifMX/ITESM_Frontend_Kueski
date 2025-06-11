@@ -11,6 +11,7 @@ const defaultState = {
 
 // Reducer para manejar acciones del carrito
 const cartReducer = (state, action) => {
+  console.log(action.type);
   switch (action.type) {
     case "ADD_ITEM":
       // Lógica para agregar un item
@@ -21,39 +22,48 @@ const cartReducer = (state, action) => {
 
         const oldProduct = state.items.find((p) => p.product.id === action.payload.product.id);
 
-        const newProduct = { ...oldProduct, amount: oldProduct.amount + action.payload.amount };
+        const newProduct = { ...oldProduct, amount: action.payload.amount };
         newProduct.subtotal = newProduct.amount * action.payload.product.price;
 
         // Spreads state and subs old items array
         const result = { ...state, items: [...filteredArray, newProduct] };
 
         // Calcular total a pagar
-        const total = + newProduct.subtotal;
+        const difference = newProduct.subtotal - oldProduct.subtotal 
+        const total = state.total + difference;
         result.total = total;
 
         return result;
       }
-
       return { length: state.length + 1, items: [...state.items, action.payload], total: state.total + (action.payload.product.price * action.payload.amount) };
     case "REMOVE_ITEM":
       // Lógica para eliminar un item
       let newLength = null, items;
 
-      const productToReduce = state.items.find(item => item.product.id === action.payload);
-      productToReduce.amount -= 1;
+      const itemToReduce = state.items.find(item => item.product.id === action.payload);
+      itemToReduce.amount -= 1;
+      itemToReduce.subtotal -= itemToReduce.product.price;
+
       items = state.items.filter(item => item.product.id !== action.payload);
 
-      if (productToReduce.amount === 0) {
+      if (itemToReduce.amount === 0) {
         newLength = state.length > 0 ? state.length - 1 : state.length;
       } else {
-        items.push(productToReduce);
+        items.push(itemToReduce);
       }
 
-      return {
-        total: state.total - productToReduce.price,
-        length: newLength === null ? state.length : newLength,
-        items 
+      if (newLength === 0) {
+        localStorage.removeItem('cart');
       };
+
+      const res = {
+        total: state.total - itemToReduce.product.price,
+        length: newLength === null ? state.length : newLength,
+        items
+      };
+
+      return res;
+
     case "CLEAR_CART":
       return defaultState;
     default:
@@ -118,7 +128,6 @@ export const CartProvider = ({ children }) => {
     clearCart,
     buy
   }), [state.items, state.length, addToCart, removeFromCart, clearCart, buy]);
-
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

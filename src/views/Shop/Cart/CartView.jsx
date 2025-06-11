@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import './CartView.css'
+import { useNavigate } from 'react-router';
 
 import { Card, Button, Box, Typography } from '@mui/material';
 
@@ -8,7 +9,6 @@ import { fCurrency } from '../../../utils/format-number';
 
 import { useCartContext } from '../../../context/CartContext';
 import ProductCartCard from '../../../components/ProductCartCard';
-import { useNavigate } from 'react-router';
 
 import Swal from 'sweetalert2';
 
@@ -39,7 +39,7 @@ export default function CartView() {
       Swal.fire({
         icon: 'error',
         title: '¡Ooops!',
-        text: 'Ocurrio un erro al intentar procesar tu orden. Vuelve a intentarlo.',
+        text: 'Ocurrio un error al intentar procesar tu orden. Vuelve a intentarlo.',
         heightAuto: false,
         background: '#1e1e1e',
         color: '#f1f1f1',
