@@ -28,12 +28,13 @@ export default function ProductCartCard({ payload }) {
   return (
     <>
       <Box sx={{ justifyContent: 'left', mb: '5px' }}>
-
         <Card
           sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             borderRadius: 0,
             position: 'relative',
-            display: 'flex',
             p: '15px 15px 0px 15px',
             color: 'white',
             flexDirection: { xs: 'column', md: 'row' }
@@ -48,9 +49,9 @@ export default function ProductCartCard({ payload }) {
             src={payload.imgPath}
             alt={payload.name}
           />
-          <Box >
-            <CardContent sx={{ flex: '1 0 auto', p: 1 }}>
-              <Box sx={{ display: 'flex', justifyContent: { md: 'space-between' }, flexDirection: { xs: 'column' }, width: { lg: '240px', xs: '240px' }, maxHeight: '120px', minHeight: '120px', textAlign: 'left' }}>
+          <Box>
+            <CardContent sx={{ p: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: { md: 'space-between' }, flexDirection: { xs: 'column' }, width: { lg: '240px', xs: '240px' }, maxHeight: '120px', minHeight: '120px', textAlign: { sm: 'left' } }}>
                 <Typography component="div" variant="h6" sx={{ minWidth: '240px', maxWidth: '480px' }} >
                   {item.name}
                 </Typography>
@@ -63,20 +64,22 @@ export default function ProductCartCard({ payload }) {
                 </Typography>
               </Box>
 
-              <Box sx={{ border: 'solid 3.5px yellow', borderRadius: '20px', width: '100px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: '20px', p: '3px' }}>
-                <DeleteOutlineRoundedIcon onClick={() => handleDelete(item.id)} />
-                <Typography
-                  variant="subtitle1"
-                  component="div"
-                >
-                  {item ? item.amount : 1}
-                </Typography>
-                <AddRoundedIcon onClick={() => handleAdd({ amount: item.amount + 1, product: item })} />
+              <Box sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'left' }, alignItems: { xs: 'center', sm: 'left' } }}>
+                <Box sx={{ border: 'solid 3.5px yellow', borderRadius: '20px', width: '100px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: '20px', p: '3px' }}>
+                  <DeleteOutlineRoundedIcon onClick={() => handleDelete(item.id)} />
+                  <Typography
+                    variant="subtitle1"
+                    component="div"
+                  >
+                    {item ? item.amount : 1}
+                  </Typography>
+                  <AddRoundedIcon onClick={() => handleAdd({ amount: item.amount + 1, product: item })} />
+                </Box>
               </Box>
             </CardContent>
           </Box>
         </Card>
-      </Box >
+      </Box>
     </>
   );
 }

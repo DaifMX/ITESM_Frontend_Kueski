@@ -1,7 +1,6 @@
 .item-list-container{
   display: flex;
   width: 100%;
-  background-color: black;
   flex-direction: column;
   font-weight: Bold;
   color: white;
