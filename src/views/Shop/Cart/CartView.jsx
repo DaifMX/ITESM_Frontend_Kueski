@@ -98,7 +98,6 @@ export default function CartView() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    '&:hover': { backgroundColor: '#e6d225' },
                     background: 'linear-gradient(135deg,rgb(20, 170, 35) 0%,rgb(23, 204, 26) 50%,rgb(25, 247, 0) 100%)',
 
                     // animated gradient
@@ -118,6 +117,7 @@ export default function CartView() {
                     '&:hover': {
                       transform: 'scale(1.02)',
                       boxShadow: '0 12px 32px rgba(0, 0, 0, 0.2)',
+                      backgroundColor: '#e6d225'
                     },
 
                     // keyframes for background animation
