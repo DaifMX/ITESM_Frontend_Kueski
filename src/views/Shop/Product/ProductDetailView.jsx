@@ -67,7 +67,7 @@ export default function ProductDetailView({ context }) {
               {/* Carta de Control de Producto */}
               <Card sx={{ width: { xs: "80%", sm: '100%' }, mb: 4 }}>
                 <CardMedia
-                  sx={{ height: 300, width: { xs: 300, sm: 500 } }}
+                  sx={{ height: 300, width: { xs: 300, sm: 500 }, mx: 'auto'}}
                   image={`${import.meta.env.VITE_BASE_API_URL}`.replace('/api/', `${product.imgPath}`)}
                   title={product.name}
                 />
