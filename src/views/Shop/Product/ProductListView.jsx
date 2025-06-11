@@ -35,7 +35,7 @@ export default function ProductListView() {
   return (
     <>
       <Box sx={{ display: "flex" }}>
-        <Box sx={{ display: "flex", flexWrap: { md: "wrap" }, width: "1460px", margin: "0 auto", flexDirection: { xs: 'column', sm: 'row' }, justifyContent: { xs: 'center' }, alignItems: { xs: 'center' } }}>
+        <Box sx={{ display: "flex", flexWrap: { md: "wrap" }, width: "1460px", margin: "0 auto", flexDirection: { xs: 'column', md: 'row' }, justifyContent: { xs: 'center' }, alignItems: { xs: 'center' } }}>
           {loading ? (
             <CircularProgress />
           ) : prodcuts && prodcuts.length > 0 ? (

@@ -58,15 +58,14 @@ export default function ProductDetailView({ context }) {
               justifyContent: 'center',
               maxWidth: '500px',
               alignItems: 'center',
-              borderRadius: 2,
               margin: "10px"
             }}>
-              <Typography variant="h4" sx={{ color: 'white', textAlign: 'center', mb: { xs: 10, sm: 4 }, height: "20px" }}>
+              <Typography variant="h4" sx={{ color: 'white', textAlign: 'center', mb: 2}}>
                 {product.name}
               </Typography>
 
               {/* Carta de Control de Producto */}
-              <Card sx={{ width: {xs: "80%", sm: '100%'}, mb: 4 }}>
+              <Card sx={{ width: { xs: "80%", sm: '100%' }, mb: 4 }}>
                 <CardMedia
                   sx={{ height: 300, width: { xs: 300, sm: 500 } }}
                   image={`${import.meta.env.VITE_BASE_API_URL}`.replace('/api/', `${product.imgPath}`)}
@@ -109,31 +108,16 @@ export default function ProductDetailView({ context }) {
                     <Typography variant="h3">+</Typography>
                   </Button>
 
-                  {context?.type === 'CART' ? (
-                    <Button variant="contained"
-                      onClick={() => {
-                        removeFromCart(product?.id)
-                        console.log('PDC', product.id)
-                      }}
-                      sx={{
-                        backgroundColor: '#ab1002',
-                        height: 60,
-                        fontWeight: 700,
-                        '&:hover': { backgroundColor: '#cf1302' }
-                      }}> Borrar </Button>
-                  ) : (
-                    <Button variant="contained"
-                      onClick={() => addToCart({ product: product, amount: productQuantity, subtotal: product.price * productQuantity })}
-                      sx={{
-                        backgroundColor: '#cebd22',
-                        height: 60,
-                        fontWeight: 700,
-                        '&:hover': { backgroundColor: '#e6d225' }
-                      }}>
-                      Agregar
-                    </Button>
-                  )
-                  }
+                  <Button variant="contained"
+                    onClick={() => addToCart({ product: product, amount: productQuantity, subtotal: product.price * productQuantity })}
+                    sx={{
+                      backgroundColor: '#cebd22',
+                      height: 60,
+                      fontWeight: 700,
+                      '&:hover': { backgroundColor: '#e6d225' }
+                    }}>
+                    Agregar
+                  </Button>
 
                 </CardContent>
                 <Typography variant="h5" component="div" sx={{ textAlign: 'center', py: 2 }}>
@@ -142,32 +126,26 @@ export default function ProductDetailView({ context }) {
               </Card>
 
               {/* Carta de descripción del Producto */}
-              {
-                context?.type !== 'CART' ? (
-                  <Card sx={{ width: { xs: "80%", sm: 500 } }}>
-                    <CardContent>
-                      <Typography variant="h5" component="div" sx={{ mb: 3, height: "150px", overflow: "scroll" }}>
-                        {product.description}
-                      </Typography>
-                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button
-                          variant="contained"
-                          sx={{
-                            backgroundColor: '#cebd22',
-                            height: 60,
-                            fontWeight: 700,
-                            '&:hover': { backgroundColor: '#e6d225' }
-                          }}
-                          onClick={() => navigate('/')}>
-                          Regresar
-                        </Button>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <></>
-                )
-              }
+              <Card sx={{ width: { xs: "80%", sm: 500 } }}>
+                <CardContent>
+                  <Typography variant="h5" component="div" sx={{ mb: 3, height: "150px", overflow: "scroll" }}>
+                    {product.description}
+                  </Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: '#cebd22',
+                        height: 60,
+                        fontWeight: 700,
+                        '&:hover': { backgroundColor: '#e6d225' }
+                      }}
+                      onClick={() => navigate('/')}>
+                      Regresar
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
             </Box>
           </Box >
 

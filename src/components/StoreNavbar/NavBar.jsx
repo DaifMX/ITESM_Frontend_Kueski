@@ -183,7 +183,6 @@ function ResponsiveAppBar() {
             component="a"
             href="#app-bar-with-responsive-menu"
             sx={{
-              mr: 2,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
@@ -215,7 +214,6 @@ function ResponsiveAppBar() {
                 <Avatar sx={{ width: 35, height: 35, color: isLogged ? 'white' : 'black' }} />
               </IconButton>
             </Tooltip>
-
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"

@@ -76,7 +76,7 @@ const PopoverModal = memo(({
                 Subir Imagen
                 <input
                     type="file"
-                    accept="image/jpeg,image/webp"
+                    accept="image/webp"
                     hidden
                     onChange={handleUploadImage}
                 />
@@ -107,8 +107,6 @@ const TableRowComponent = ({
     useEffect(() => {
         console.log(prodStock)
     }, [prodStock])
-
-
     return (
         <TableRow >
             <TableCell sx={{ color: '#fff' }}>{row.name}</TableCell>
@@ -266,7 +264,7 @@ export default function Products() {
                             <HeaderCell>Descripción</HeaderCell>
                             <HeaderCell sx={{ textAlign: 'center' }}>Stock</HeaderCell>
                             <HeaderCell sx={{ textAlign: 'center' }}>Stock Comprometido</HeaderCell>
-                            <HeaderCell align="right">Opciones</HeaderCell>
+                            <HeaderCell align="center">Opciones</HeaderCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

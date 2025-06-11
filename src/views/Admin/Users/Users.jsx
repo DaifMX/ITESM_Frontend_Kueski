@@ -13,9 +13,11 @@ import {
 
 import { styled } from '@mui/material/styles';
 
-import AddIcon from '@mui/icons-material/Add';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {
+    MoreVert,
+    ArrowBack,
+    Add,
+} from '@mui/icons-material';
 
 import DeleteConfirmationDialog from '../../../components/DeleteConfirmationDialog';
 
@@ -140,10 +142,10 @@ export default function UsersView() {
             </Typography>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                <Button startIcon={<ArrowBackIcon />} variant="contained" sx={{ bgcolor: '#fff' }} onClick={() => navigate('./home')}>
+                <Button startIcon={<ArrowBack />} variant="contained" sx={{ bgcolor: '#fff' }} onClick={() => navigate('./home')}>
                     Volver
                 </Button>
-                <Button startIcon={<AddIcon />} variant="contained" sx={{ bgcolor: '#1976d2' }} onClick={() => setOpenNewUserDialog(true)}>
+                <Button startIcon={<Add />} variant="contained" sx={{ bgcolor: '#1976d2' }} onClick={() => setOpenNewUserDialog(true)}>
                     Nuevo
                 </Button>
             </Box>
@@ -155,8 +157,8 @@ export default function UsersView() {
                             <HeaderCell>Nombre</HeaderCell>
                             <HeaderCell>Apellido</HeaderCell>
                             <HeaderCell>No. Telefono</HeaderCell>
-                            <HeaderCell>Rol</HeaderCell>
-                            <HeaderCell align="right">Opciones</HeaderCell>
+                            <HeaderCell sx={{ textAlign: 'center' }}>Rol</HeaderCell>
+                            <HeaderCell align="center">Opciones</HeaderCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -165,10 +167,10 @@ export default function UsersView() {
                                 <TableCell sx={{ color: '#fff' }}>{row.firstName}</TableCell>
                                 <TableCell sx={{ color: '#fff' }}>{row.lastName}</TableCell>
                                 <TableCell sx={{ color: '#fff' }}>{row.phoneNumber}</TableCell>
-                                <TableCell sx={{ color: '#fff' }}>{row.role}</TableCell>
-                                <TableCell sx={{ display: 'flex', justifyContent: 'right'}}>
+                                <TableCell sx={{ color: '#fff', textAlign: 'center' }}>{row.role}</TableCell>
+                                <TableCell align='center'>
                                     <IconButton onClick={(e) => handleOpenMenu(e, row)}>
-                                        <MoreVertIcon sx={{ color: '#fff' }} />
+                                        <MoreVert sx={{ color: '#fff' }} />
                                     </IconButton>
                                 </TableCell>
                             </TableRow>

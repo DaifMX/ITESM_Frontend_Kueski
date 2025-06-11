@@ -38,6 +38,7 @@ export default function AppRoutes() {
                         { index: true, element: <ProductListView /> },
                         { path: 'product/:productId', element: <ProductDetailView /> },
                         { path: 'category/:categoryId', element: <ProductListView /> },
+                        { path: 'unauthorized', element: <h1>Forbidden</h1> },
                         { path: '*', element: <h1>Error: 404</h1> },
                         {
                             element: <RequireAuth allowedRoles={['USER', 'ADMIN']} />,
